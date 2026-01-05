@@ -1,65 +1,125 @@
-import Image from "next/image";
+import Link from "next/link";
+import { fetchFromStrapi } from "../lib/strapi";
+import HeroSlider from "../components/HeroSlider";
 
-export default function Home() {
+
+/* -------------------- Types -------------------- */
+
+type FlashItem = {
+  id: number;
+  headline: string;
+};
+
+type Article = {
+  id: number;
+  title: string;
+  slug: string;
+  primaryCategory?: string;
+  coverImage?: {
+    url: string;
+  };
+  publishedAt: string;
+};
+
+/* -------------------- Helpers -------------------- */
+
+function getImageUrl(url?: string) {
+  if (!url) return null;
+  return url.startsWith("http")
+    ? url
+    : `http://localhost:1337${url}`;
+}
+
+/* -------------------- Page -------------------- */
+
+export default async function HomePage() {
+  /* Flash News */
+  const flashRes = await fetchFromStrapi(
+    "/flash-news?filters[isActive][$eq]=true&sort=order:asc"
+  );
+  const flashItems: FlashItem[] = flashRes.data;
+
+  /* Articles (WITH cover images) */
+  const articleRes = await fetchFromStrapi(
+    "/articles?sort=publishedAt:desc&pagination[pageSize]=10&populate=coverImage"
+  );
+  const articles: Article[] = articleRes.data;
+
+  const heroArticles = articles.slice(0, 3);
+  const moreArticles = articles.slice(3, 8);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      {/* ================= FLASH NEWS ================= */}
+      {flashItems.length > 0 && (
+        <section className="flash-news">
+          <div className="flash-marquee">
+            <div className="flash-track">
+              {flashItems.map((f) => (
+                <span key={`a-${f.id}`} className="flash-item">
+                  <span className="flash-dot" />
+                  {f.headline}
+                </span>
+              ))}
+            </div>
+        
+            <div className="flash-track">
+              {flashItems.map((f) => (
+                <span key={`b-${f.id}`} className="flash-item">
+                  <span className="flash-dot" />
+                  {f.headline}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ================= HERO ================= */}
+      {heroArticles.length > 0 && (
+        <HeroSlider articles={heroArticles} />
+      )}
+
+      {/* ================= MORE NEWS ================= */}
+      <section className="home-section">
+        <div className="section-header">
+          <h2 className="section-title">More News</h2>
+
+          <Link href="/news" className="section-view-all">
+            View all →
+          </Link>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+
+        <ul className="news-list">
+          {moreArticles.map((a) => (
+            <li key={a.id}>
+              <Link href={`/news/${a.slug}`} className="news-row">
+                {a.coverImage && (
+                  <img
+                    className="news-thumb"
+                    src={getImageUrl(a.coverImage.url)!}
+                    alt={a.title}
+                  />
+                )}
+
+                <div className="news-text">
+                  <span className="news-title">{a.title}</span>
+                  <span className="news-date">
+                    {new Date(a.publishedAt).toLocaleDateString()}
+                  </span>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+
+      {/* ================= SMALL ADS ================= */}
+      <section className="home-ads small-ads">
+        <div className="ad-box small">Advertisement</div>
+        <div className="ad-box small">Advertisement</div>
+      </section>
+    </>
   );
 }
