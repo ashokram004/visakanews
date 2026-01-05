@@ -104,20 +104,42 @@ body {
 
 .site-header {
   display: grid;
-  grid-template-columns: 200px 1fr 200px;
+  grid-template-columns: 140px 1fr 160px;
   align-items: center;
   padding: 12px 16px;
   border-bottom: 1px solid var(--border-light);
+  position: relative;
+  z-index: 1;
+  height: 100px;
+  gap: 20px;
 }
 
+/* Full-width background */
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  background: #ffffff;          /* header bg color */
+  border-bottom: 1px solid var(--border-light);
+  z-index: -1;
+}
+
+/* Logo */
 .site-header .logo a {
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 26px;
+  font-weight: 800;
   color: var(--foreground);
   text-decoration: none;
+  white-space: nowrap;
+  width: 100%;
 }
 
+/* Header Ad */
 .header-ad {
+  margin-left: 0px;
   background: #f2f2f2;
   height: 60px;
   display: flex;
@@ -126,17 +148,66 @@ body {
   color: #999;
   font-size: 14px;
   border: 1px solid var(--border-light);
+  border-radius: 4px;
 }
 
+/* Search Box */
 .search-box {
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .search-box input {
-  padding: 6px 8px;
-  width: 160px;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 20px;
   border: 1px solid var(--border-light);
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
 }
+
+.search-box input::placeholder {
+  color: #888;
+}
+
+.search-box input:focus {
+  border-color: #000;
+  background: #fff;
+}
+
+/* ================= MOBILE HEADER ================= */
+
+@media (max-width: 768px) {
+  .site-header {
+    grid-template-columns: 60px 1fr 70px; /* 🔥 ONE ROW */
+    gap: 10px;
+    padding: 12px 12px;
+    height: 60px;
+  }
+
+  .site-header .logo a {
+    font-size: 15px;
+  }
+
+  .header-ad {
+    height: 40px;
+    font-size: 12px;
+    padding: 0 6px;
+  }
+
+  .search-box {
+    justify-content: center;
+  }
+
+  .search-box input {
+    width: 100%;
+    max-width: 160px;
+    padding: 6px 10px;
+    font-size: 8px;
+  }
+}
+
 
 /* ================= NAV ================= */
 
@@ -161,7 +232,6 @@ body {
   position: sticky;
   top: 0;
   z-index: 1000;
-
   background: var(--background);
 }
 
@@ -207,6 +277,7 @@ body {
   .main-nav {
     gap: 14px;
     padding: 10px 12px;
+    justify-content: center;
   }
 
   .main-nav a {
@@ -226,27 +297,44 @@ body {
 /* ================= FOOTER ================= */
 
 .site-footer {
-  border-top: 1px solid var(--border-light);
-  background: #f9f9f9;
-  padding: 20px 16px;
+  position: relative;
+  z-index: 1;
+  padding: 32px 16px;
   font-size: 14px;
+  color: #ddd;
 }
 
+/* ---------- Full-width background ---------- */
+.site-footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  background: #1b1b1b;
+  z-index: -1;
+}
+
+/* ---------- Layout ---------- */
+
 .footer-top {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr; /* desktop */
+  gap: 32px;
 }
 
 .footer-top strong {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  font-size: 15px;
+  color: #fff;
 }
 
-.footer-top p {
-  margin: 0;
-  color: var(--text-muted);
+.footer-top p,
+.footer-top li {
+  color: #bbb;
+  line-height: 1.5;
 }
 
 .footer-top ul {
@@ -256,42 +344,113 @@ body {
 }
 
 .footer-top li {
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .footer-top a {
   text-decoration: none;
-  color: var(--foreground);
+  color: #ddd;
 }
 
 .footer-top a:hover {
+  color: #fff;
   text-decoration: underline;
 }
 
-.footer-bottom {
-  margin-top: 20px;
-  padding-top: 10px;
-  border-top: 1px solid var(--border-light);
-  text-align: center;
-  color: var(--text-muted);
+/* ---------- Contact section ---------- */
+
+.footer-contact p {
+  margin: 4px 0;
+  font-size: 14px;
 }
 
-/* ================= RESPONSIVE HEADER ================= */
+/* ---------- Bottom ---------- */
+
+.footer-bottom {
+  margin-top: 24px;
+  padding-top: 12px;
+  border-top: 1px solid #333;
+  text-align: center;
+  color: #aaa;
+  font-size: 13px;
+}
+
+/* ================= MOBILE FOOTER ================= */
 
 @media (max-width: 768px) {
-  .site-header {
-    grid-template-columns: 1fr;
-    gap: 10px;
-    text-align: center;
+  .site-footer {
+    padding: 24px 16px;
   }
 
-  .search-box {
-    text-align: center;
+  .footer-top {
+    grid-template-columns: 1fr 1fr;   /* ✅ 2 columns instead of stack */
+    gap: 20px;
   }
 
-  .main-nav {
-    justify-content: center;
+  /* Make first section full width */
+  .footer-top > div:first-child {
+    grid-column: span 2;
   }
+
+  .footer-top strong {
+    font-size: 14px;
+  }
+
+  .footer-top p,
+  .footer-top li {
+    font-size: 13px;
+  }
+
+  .footer-bottom {
+    margin-top: 16px;
+    font-size: 12px;
+  }
+}
+
+
+/* ================= FOOTER SOCIAL ================= */
+
+.footer-social {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.footer-social a {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #2a2a2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ddd;
+  transition: all 0.2s ease;
+}
+
+.footer-social a:hover {
+  background: #fff;
+  color: #000;
+}
+
+
+/* Mobile tweak */
+@media (max-width: 768px) {
+  .footer-social {
+    margin-top: 10px;
+    margin-left: 10%;
+  }
+
+  .footer-social a {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  
 
   .footer-top {
     flex-direction: column;
@@ -411,20 +570,18 @@ body {
 /* Mobile */
 @media (max-width: 768px) {
   .hero-slider-wrapper {
-    height: 260px;
+    height: 360px;
   }
 
   .hero-content h2 {
     font-size: 16px;
   }
-}
 
-
-@media (max-width: 768px) {
   .hero-slide {
-    height: 260px;
+    height: 100%;
   }
 }
+
 
 /* ---------- Buttons ---------- */
 
@@ -504,20 +661,19 @@ body {
   display: block;
 }
 
-/* ================= SECTION HEADER ================= */
 
 /* ================= SECTION HEADER ================= */
 
 .section-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;          /* 🔥 THIS fixes vertical mismatch */
+  align-items: center;          
   margin-bottom: 16px;
 }
 
 .section-title {
-  margin: 0;                    /* 🔥 remove default h2 margin */
-  line-height: 1.2;             /* tighten height */
+  margin: 0;                    
+  line-height: 1.2;            
 }
 
 .section-view-all {
@@ -526,7 +682,7 @@ body {
   color: #d32f2f;
   text-decoration: none;
   white-space: nowrap;
-  line-height: 1;               /* 🔥 keeps it aligned */
+  line-height: 1; 
 }
 
 .section-view-all:hover {

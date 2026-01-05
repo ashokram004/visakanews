@@ -1,12 +1,28 @@
 import Link from "next/link";
 import "./globals.css";
 import MainNav from "../components/MainNav";
+import { fetchFromStrapi } from "@/lib/strapi";
+import {
+  FacebookIcon,
+  TwitterIcon,
+  LinkedInIcon,
+  YouTubeIcon,
+} from "../components/FooterIcons";
+import SearchBox from "@/components/SearchBox";
+
 
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+
+  const authorRes = await fetchFromStrapi(
+    "/authors?pagination[pageSize]=1"
+  );
+  
+  const author = authorRes?.data?.[0];
+  
   return (
     <html lang="en">
       <body style={{ position: "relative" }}>
@@ -24,14 +40,15 @@ export default async function RootLayout({
               {/* ================= HEADER ================= */}
               <header className="site-header">
                 <div className="logo">
-                  <Link href="/">VisakaNews</Link>
+                  <Link href="/">Visaka<br/>News</Link>
                 </div>
 
                 <div className="header-ad">Header Advertisement</div>
 
                 <div className="search-box">
-                  <input type="text" placeholder="Search news..." />
+                  <SearchBox />
                 </div>
+
               </header>
 
               {/* ================= NAV ================= */}
@@ -43,37 +60,64 @@ export default async function RootLayout({
               {/* ================= FOOTER ================= */}
               <footer className="site-footer">
                 <div className="footer-top">
+
+                  {/* About */}
                   <div>
-                    <strong>NewsSite</strong>
+                    <strong>VisakaNews</strong>
                     <p>
-                      Trusted source for latest news, politics, movies and
-                      updates.
+                      Trusted source for latest news, politics, movies and regional updates.
                     </p>
                   </div>
 
+                  {/* Quick Links */}
                   <div>
                     <strong>Quick Links</strong>
                     <ul>
-                      <li>
-                        <Link href="/news">News</Link>
-                      </li>
-                      <li>
-                        <Link href="/profiles">Profiles</Link>
-                      </li>
-                      <li>
-                        <Link href="/videos">Videos</Link>
-                      </li>
+                      <li><Link href="/news">News</Link></li>
+                      <li><Link href="/profiles">Profiles</Link></li>
+                      <li><Link href="/videos">Videos</Link></li>
                     </ul>
                   </div>
 
-                  <div>
-                    <strong>Follow Us</strong>
-                    <p>Facebook · Twitter · YouTube</p>
+                  {/* Contact */}
+                  <div className="footer-contact">
+                    <strong>Contact</strong>
+
+                    {author?.name && <p>{author.name}</p>}
+                    {author?.contact && <p>📞 +91 {author.contact}</p>}
+                    {author?.mail && <p>✉️ {author.mail}</p>}
+
+                    {/* Social Icons */}
+                    <div className="footer-social">
+                      {author?.facebook && (
+                        <a href={author.facebook} target="_blank" aria-label="Facebook">
+                          <FacebookIcon />
+                        </a>
+                      )}
+
+                      {author?.twitter && (
+                        <a href={author.twitter} target="_blank" aria-label="Twitter">
+                          <TwitterIcon />
+                        </a>
+                      )}
+
+                      {author?.linkedin && (
+                        <a href={author.linkedin} target="_blank" aria-label="LinkedIn">
+                          <LinkedInIcon />
+                        </a>
+                      )}
+
+                      {author?.youtube && (
+                        <a href={author.youtube} target="_blank" aria-label="YouTube">
+                          <YouTubeIcon />
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
 
                 <div className="footer-bottom">
-                  © {new Date().getFullYear()} NewsSite. All rights reserved.
+                  © {new Date().getFullYear()} VisakaNews. All rights reserved.
                 </div>
               </footer>
             </div>
