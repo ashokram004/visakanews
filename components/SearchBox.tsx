@@ -11,6 +11,7 @@ export default function SearchBox() {
     e.preventDefault();
     if (!query.trim()) return;
     router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+    setQuery("");
   }
 
   return (

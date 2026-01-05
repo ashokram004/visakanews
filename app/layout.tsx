@@ -40,16 +40,18 @@ export default async function RootLayout({
               {/* ================= HEADER ================= */}
               <header className="site-header">
                 <div className="logo">
-                  <Link href="/">Visaka<br/>News</Link>
+                  <Link href="/">
+                    <img
+                      src="/logoJPG.jpg"
+                      alt="Visaka News"
+                      className="site-logo"
+                    />
+                  </Link>
                 </div>
 
                 <div className="header-ad">Header Advertisement</div>
-
-                <div className="search-box">
-                  <SearchBox />
-                </div>
-
               </header>
+
 
               {/* ================= NAV ================= */}
               <MainNav />
@@ -62,12 +64,17 @@ export default async function RootLayout({
                 <div className="footer-top">
 
                   {/* About */}
-                  <div>
-                    <strong>VisakaNews</strong>
+                  <div className="footer-brand">
+                    <img
+                      src="/logoJPG.jpg"
+                      alt="Visaka News"
+                      className="footer-logo"
+                    />
                     <p>
                       Trusted source for latest news, politics, movies and regional updates.
                     </p>
                   </div>
+
 
                   {/* Quick Links */}
                   <div>

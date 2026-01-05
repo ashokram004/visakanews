@@ -1,18 +1,16 @@
-import { fetchFromStrapi } from "../../lib/strapi";
 import Link from "next/link";
+import { fetchFromStrapi } from "../../lib/strapi";
 
 /* -------------------- Types -------------------- */
-
-type Props = {
-  searchParams: Promise<{ q?: string }>;
-};
 
 type Article = {
   id: number;
   title: string;
   slug: string;
   publishedAt: string;
-  coverImage?: { url: string };
+  coverImage?: {
+    url: string;
+  };
 };
 
 type Profile = {
@@ -20,12 +18,9 @@ type Profile = {
   name: string;
   slug: string;
   profileType: "POLITICIAN" | "CELEBRITY";
-  profileImage?: { url: string };
-};
-
-type Video = {
-  id: number;
-  title: string;
+  profileImage?: {
+    url: string;
+  };
 };
 
 /* -------------------- Helpers -------------------- */
@@ -39,114 +34,104 @@ function getImageUrl(url?: string) {
 
 /* -------------------- Page -------------------- */
 
-export default async function SearchPage({ searchParams }: Props) {
-  // ✅ REQUIRED IN NEXT 15
+export default async function SearchPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  // ✅ Next.js App Router fix
   const { q } = await searchParams;
   const query = q?.trim();
 
   if (!query) {
-    return <p>Please enter a search term.</p>;
+    return (
+      <main className="news-page">
+        <h1 className="page-title">Search</h1>
+        <p>Please enter a search term.</p>
+      </main>
+    );
   }
 
-  /* -------------------- Fetch Data -------------------- */
+  /* -------------------- FETCH (SAFE QUERIES ONLY) -------------------- */
 
-  const [articlesRes, profilesRes, videosRes] = await Promise.all([
+  const [articlesRes, profilesRes] = await Promise.all([
     fetchFromStrapi(
-      `/articles?filters[title][$containsi]=${query}&sort=publishedAt:desc&populate=coverImage`
+      `/articles?filters[title][$containsi]=${query}&populate=coverImage&sort=publishedAt:desc`
     ),
     fetchFromStrapi(
-      `/profiles?filters[name][$containsi]=${query}&populate=profileImage`
-    ),
-    fetchFromStrapi(
-      `/videos?filters[title][$containsi]=${query}`
+      `/profiles?filters[$or][0][name][$containsi]=${query}&filters[$or][1][shortBio][$containsi]=${query}&populate=profileImage`
     ),
   ]);
 
   const articles: Article[] = articlesRes.data;
   const profiles: Profile[] = profilesRes.data;
-  const videos: Video[] = videosRes.data;
+
+  /* -------------------- UI -------------------- */
 
   return (
-    <section className="news-page">
+    <main className="news-page">
       <h1 className="page-title">
         Search results for “{query}”
       </h1>
 
-      {/* ================= NEWS ================= */}
-      <h2 className="section-title">News</h2>
-
-      {articles.length === 0 ? (
-        <p>No news found.</p>
-      ) : (
-        <ul className="news-list-page">
-          {articles.map((a) => (
-            <li key={a.id} className="news-item">
-              {a.coverImage && (
-                <img
-                  src={getImageUrl(a.coverImage.url)!}
-                  alt={a.title}
-                  className="news-thumb"
-                />
-              )}
-
-              <div className="news-info">
-                <Link href={`/news/${a.slug}`}>
-                  <h3>{a.title}</h3>
+      {/* ================= ARTICLES ================= */}
+      {articles.length > 0 && (
+        <>
+          <h2 className="section-title">News</h2>
+          <ul className="news-list">
+            {articles.map((a) => (
+              <li key={a.id}>
+                <Link href={`/news/${a.slug}`} className="news-row">
+                  {a.coverImage && (
+                    <img
+                      src={getImageUrl(a.coverImage.url)!}
+                      alt={a.title}
+                      className="news-thumb"
+                    />
+                  )}
+                  <div className="news-text">
+                    <span className="news-title">{a.title}</span>
+                    <span className="news-date">
+                      {new Date(a.publishedAt).toLocaleDateString()}
+                    </span>
+                  </div>
                 </Link>
-
-                <div className="news-date">
-                  {new Date(a.publishedAt).toLocaleDateString()}
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
 
       {/* ================= PROFILES ================= */}
-      <h2 className="section-title">Profiles</h2>
-
-      {profiles.length === 0 ? (
-        <p>No profiles found.</p>
-      ) : (
-        <ul className="profile-news-list">
-          {profiles.map((p) => (
-            <li key={p.id} className="news-row">
-              {p.profileImage && (
-                <img
-                  src={getImageUrl(p.profileImage.url)!}
-                  alt={p.name}
-                  className="news-thumb"
-                />
-              )}
-
-              <div className="news-text">
-                <Link href={`/profiles/${p.slug}`}>
-                  <span className="news-title">{p.name}</span>
+      {profiles.length > 0 && (
+        <> <br/>
+          <h2 className="section-title">Profiles</h2>
+          <ul className="news-list">
+            {profiles.map((p) => (
+              <li key={p.id}>
+                <Link href={`/profiles/${p.slug}`} className="news-row">
+                  {p.profileImage && (
+                    <img
+                      src={getImageUrl(p.profileImage.url)!}
+                      alt={p.name}
+                      className="news-thumb"
+                    />
+                  )}
+                  <div className="news-text">
+                    <span className="news-title">{p.name}</span>
+                    <span className="news-date">{p.profileType}</span>
+                  </div>
                 </Link>
-                <span className="news-date">{p.profileType}</span>
-              </div>
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
 
-      {/* ================= VIDEOS ================= */}
-      <h2 className="section-title">Videos</h2>
-
-      {videos.length === 0 ? (
-        <p>No videos found.</p>
-      ) : (
-        <ul className="profile-news-list">
-          {videos.map((v) => (
-            <li key={v.id}>
-              <Link href="/videos">
-                <strong>{v.title}</strong>
-              </Link>
-            </li>
-          ))}
-        </ul>
+      {/* ================= EMPTY ================= */}
+      {articles.length === 0 && profiles.length === 0 && (
+        <p>No results found.</p>
       )}
-    </section>
+    </main>
   );
 }
