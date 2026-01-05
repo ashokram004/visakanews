@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+
+/* -------------------- Types -------------------- */
 
 type Article = {
   id: number;
@@ -12,6 +14,12 @@ type Article = {
   };
 };
 
+type Props = {
+  articles: Article[];
+};
+
+/* -------------------- Helpers -------------------- */
+
 function getImageUrl(url?: string) {
   if (!url) return "";
   return url.startsWith("http")
@@ -19,26 +27,50 @@ function getImageUrl(url?: string) {
     : `http://localhost:1337${url}`;
 }
 
-export default function HeroSlider({
-  articles,
-}: {
-  articles: Article[];
-}) {
+/* -------------------- Component -------------------- */
+
+export default function HeroSlider({ articles }: Props) {
   const [index, setIndex] = useState(0);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  const total = articles.length;
+
+  /* -------------------- Auto slide -------------------- */
   useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % articles.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [articles.length]);
+    startTimer();
+    return stopTimer;
+  }, [index]);
 
-  const article = articles[index];
+  function startTimer() {
+    stopTimer();
+    timeoutRef.current = setTimeout(() => {
+      next();
+    }, 5000);
+  }
+
+  function stopTimer() {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  }
+
+  /* -------------------- Controls -------------------- */
+
+  function next() {
+    setIndex((prev) => (prev + 1) % total);
+  }
+
+  function prev() {
+    setIndex((prev) => (prev - 1 + total) % total);
+  }
+
   return (
     <div className="hero-slider-wrapper">
       <div
         className="hero-slider-track"
-        style={{ transform: `translateX(-${index * 100}%)` }}
+        style={{
+          transform: `translateX(-${index * 100}%)`,
+        }}
       >
         {articles.map((a) => (
           <Link
@@ -46,7 +78,7 @@ export default function HeroSlider({
             href={`/news/${a.slug}`}
             className="hero-slide"
             style={{
-              backgroundImage: `url(http://localhost:1337${a.coverImage?.url})`,
+              backgroundImage: `url(${getImageUrl(a.coverImage?.url)})`,
             }}
           >
             <div className="hero-overlay" />
@@ -57,7 +89,16 @@ export default function HeroSlider({
         ))}
       </div>
 
-      {/* dots */}
+      {/* ---------- Controls ---------- */}
+      <button className="hero-btn left" onClick={prev}>
+        ‹
+      </button>
+
+      <button className="hero-btn right" onClick={next}>
+        ›
+      </button>
+
+      {/* ---------- Dots ---------- */}
       <div className="hero-dots">
         {articles.map((_, i) => (
           <button
