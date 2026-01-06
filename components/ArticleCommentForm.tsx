@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL;
+
 type Props = {
   articleId: number;
 };
@@ -15,7 +17,7 @@ export default function ArticleCommentForm({ articleId }: Props) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    const res = await fetch("http://localhost:1337/api/comments", {
+    const res = await fetch(STRAPI_URL + "/api/comments", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

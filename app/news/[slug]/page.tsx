@@ -4,6 +4,8 @@ import ArticleShare from "@/components/ArticleShare";
 import ArticleComments from "@/components/ArticleComments";
 import ArticleCommentForm from "@/components/ArticleCommentForm";
 
+const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL;
+
 /* -------------------- Types -------------------- */
 
 type ContentBlock = {
@@ -95,9 +97,7 @@ function renderContent(blocks: ContentBlock[]) {
     if (block.type === "image" && block.image?.url) {
       const rawUrl = block.image.url;
 
-      const imageUrl = rawUrl.startsWith("http")
-        ? rawUrl
-        : `http://localhost:1337${rawUrl}`;
+      const imageUrl = rawUrl;
 
       return (
         <figure key={index} style={{ margin: "24px 0" }}>
@@ -168,7 +168,7 @@ export default async function ArticleDetailPage({ params }: any) {
       {article.coverImage && (
         <img
           className="article-cover"
-          src={`http://localhost:1337${article.coverImage.url}`}
+          src={article.coverImage.url}
           alt={article.coverImage.alternativeText || ""}
         />
       )}

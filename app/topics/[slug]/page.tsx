@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { fetchFromStrapi } from "../../../lib/strapi";
 
+const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL;
+
 /* -------------------- Types -------------------- */
 
 type Article = {
@@ -31,7 +33,7 @@ function getImageUrl(url?: string) {
   if (!url) return null;
   return url.startsWith("http")
     ? url
-    : `http://localhost:1337${url}`;
+    : STRAPI_URL + url;
 }
 
 /* -------------------- Page -------------------- */

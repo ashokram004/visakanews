@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { fetchFromStrapi } from "../../lib/strapi";
 
+const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL;
+
 type Article = {
   id: number;
   title: string;
@@ -27,7 +29,7 @@ export default async function NewsPage() {
           const imgUrl = a.coverImage?.url
             ? a.coverImage.url.startsWith("http")
               ? a.coverImage.url
-              : `http://localhost:1337${a.coverImage.url}`
+              : STRAPI_URL + a.coverImage.url
             : null;
 
           return (

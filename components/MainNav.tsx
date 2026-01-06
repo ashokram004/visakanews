@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL;
+
 /* -------------------- Types -------------------- */
 
 type DynamicTab = {
@@ -28,7 +30,7 @@ export default function MainNav() {
     async function loadTabs() {
       try {
         const res = await fetch(
-          "http://localhost:1337/api/dynamic-tabs?filters[isActive][$eq]=true&sort=order:asc"
+          STRAPI_URL + "/api/dynamic-tabs?filters[isActive][$eq]=true&sort=order:asc"
         );
         const json = await res.json();
         setTabs(json.data || []);

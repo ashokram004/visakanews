@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { fetchFromStrapi } from "../../lib/strapi";
 
+const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL;
+
 type Profile = {
   id: number;
   name: string;
@@ -38,7 +40,7 @@ export default async function ProfilesPage() {
                   src={
                     profile.profileImage.url.startsWith("http")
                       ? profile.profileImage.url
-                      : `http://localhost:1337${profile.profileImage.url}`
+                      : STRAPI_URL + profile.profileImage.url
                   }
                   alt={profile.name}
                   className="profile-card-avatar"

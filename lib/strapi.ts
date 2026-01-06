@@ -1,4 +1,4 @@
-const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL;
+const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL + "/api";
 
 if (!STRAPI_URL) {
   throw new Error("NEXT_PUBLIC_API_URL is not defined");

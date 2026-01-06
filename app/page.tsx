@@ -4,6 +4,8 @@ import HeroSlider from "../components/HeroSlider";
 
 /* -------------------- Types -------------------- */
 
+const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL;
+
 type FlashItem = {
   id: number;
   headline: string;
@@ -27,7 +29,7 @@ function getImageUrl(url?: string) {
   if (!url) return null;
   return url.startsWith("http")
     ? url
-    : `http://localhost:1337${url}`;
+    : STRAPI_URL + url;
 }
 
 /* -------------------- Page -------------------- */
