@@ -2,7 +2,6 @@ import Link from "next/link";
 import { fetchFromStrapi } from "../lib/strapi";
 import HeroSlider from "../components/HeroSlider";
 
-
 /* -------------------- Types -------------------- */
 
 type FlashItem = {
@@ -15,6 +14,7 @@ type Article = {
   title: string;
   slug: string;
   primaryCategory?: string;
+  isFeatured?: boolean;
   coverImage?: {
     url: string;
   };
@@ -33,20 +33,37 @@ function getImageUrl(url?: string) {
 /* -------------------- Page -------------------- */
 
 export default async function HomePage() {
-  /* Flash News */
+  /* -------------------- Flash News -------------------- */
   const flashRes = await fetchFromStrapi(
     "/flash-news?filters[isActive][$eq]=true&sort=order:asc"
   );
   const flashItems: FlashItem[] = flashRes.data;
 
-  /* Articles (WITH cover images) */
+  /* -------------------- Articles -------------------- */
   const articleRes = await fetchFromStrapi(
-    "/articles?sort=publishedAt:desc&pagination[pageSize]=10&populate=coverImage"
+    "/articles?sort=publishedAt:desc&pagination[pageSize]=20&populate=coverImage"
   );
-  const articles: Article[] = articleRes.data;
 
-  const heroArticles = articles.slice(0, 3);
-  const moreArticles = articles.slice(3, 8);
+  const allArticles: Article[] = articleRes.data;
+
+  /* -------------------- FEATURED LOGIC -------------------- */
+
+  const featuredArticles = allArticles.filter(
+    (a) => a.isFeatured
+  );
+
+  const normalArticles = allArticles.filter(
+    (a) => !a.isFeatured
+  );
+
+  // Build home list (max 8)
+  const homeArticles: Article[] = [
+    ...featuredArticles,
+    ...normalArticles,
+  ].slice(0, 8);
+
+  const heroArticles = homeArticles.slice(0, 3);
+  const moreArticles = homeArticles.slice(3, 8);
 
   return (
     <>
@@ -62,7 +79,8 @@ export default async function HomePage() {
                 </span>
               ))}
             </div>
-        
+
+            {/* duplicate track for seamless loop */}
             <div className="flash-track">
               {flashItems.map((f) => (
                 <span key={`b-${f.id}`} className="flash-item">
@@ -113,7 +131,6 @@ export default async function HomePage() {
           ))}
         </ul>
       </section>
-
 
       {/* ================= SMALL ADS ================= */}
       <section className="home-ads small-ads">
