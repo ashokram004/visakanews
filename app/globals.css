@@ -1175,6 +1175,13 @@ body {
   gap: 10px;
 }
 
+.comment-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .comment-form input,
 .comment-form textarea {
   padding: 10px;
@@ -1457,4 +1464,38 @@ body {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* ================= POPUP MESSAGES ================= */
+
+.popup {
+  padding: 10px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+  height: 10px;
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.success-popup {
+  background: #4caf50;
+  color: #fff;
+  border: 1px solid #45a049;
+}
+
+.failure-popup {
+  background: #f44336;
+  color: #fff;
+  border: 1px solid #d32f2f;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

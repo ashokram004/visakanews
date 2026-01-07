@@ -1,8 +1,7 @@
 import { toEmbedUrl } from "@/lib/video";
 import { fetchFromStrapi } from "../../../lib/strapi";
 import ArticleShare from "@/components/ArticleShare";
-import ArticleComments from "@/components/ArticleComments";
-import ArticleCommentForm from "@/components/ArticleCommentForm";
+import ArticleCommentsSection from "@/components/ArticleCommentsSection";
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -198,9 +197,7 @@ export default async function ArticleDetailPage({ params }: any) {
       )}
 
       {/* COMMENTS (BOTTOM) */}
-      <ArticleCommentForm articleId={article.id} />
-
-      <ArticleComments comments={commentsRes.data || []} />
+      <ArticleCommentsSection initialComments={commentsRes.data || []} articleId={article.id} />
 
     </article>
   );
