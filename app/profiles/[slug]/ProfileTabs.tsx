@@ -1,42 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { toEmbedUrl } from "../../../lib/video";
+import { useParams } from "next/navigation";
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL;
 
 /* -------------------- Types -------------------- */
-
-type Article = {
-  id: number;
-  title: string;
-  slug: string;
-  publishedAt?: string;
-  coverImage?: {
-    url: string;
-  };
-};
-
-type Video = {
-  id: number;
-  title: string;
-  embedUrl: string;
-};
-
-type Achievement = {
-  id: number;
-  title: string;
-  description?: any;
-  year?: number;
-};
-
-type Activity = {
-  id: number;
-  title: string;
-  description?: any;
-  date?: string;
-};
 
 type Profile = {
   name: string;
@@ -46,24 +16,14 @@ type Profile = {
   profileImage?: {
     url: string;
   };
-  articles?: Article[];
-  videos?: Video[];
 };
 
 type Props = {
   profile: Profile;
-  achievements: Achievement[];
-  activities: Activity[];
+  children: React.ReactNode;
 };
 
 /* -------------------- Helpers -------------------- */
-
-function richTextToPlainText(blocks: any[]): string {
-  if (!Array.isArray(blocks)) return "";
-  return blocks
-    .map((b) => b.children?.map((c: any) => c.text).join(""))
-    .join("\n");
-}
 
 function getImageUrl(url?: string) {
   if (!url) return null;
@@ -74,17 +34,13 @@ function getImageUrl(url?: string) {
 
 /* -------------------- Component -------------------- */
 
-export default function ProfileTabs({
-  profile,
-  achievements,
-  activities,
-}: Props) {
-  const articles = profile.articles || [];
-  const videos = profile.videos || [];
+export default function ProfileTabs({ profile, children }: Props) {
+  const pathname = usePathname();
+  const params = useParams();
+  const slug = params.slug as string;
 
-  const [activeTab, setActiveTab] = useState<
-    "home" | "news" | "achievements" | "activities" | "videos"
-  >("home");
+  const tabs = ["home", "news", "achievements", "activities", "videos"];
+  const activeTab = pathname === `/profiles/${slug}` ? "home" : tabs.find(tab => pathname.endsWith(`/${tab}`)) || null;
 
   return (
     <section className="profile-detail-page">
@@ -107,111 +63,21 @@ export default function ProfileTabs({
 
         {/* Tabs */}
         <nav className="profile-tabs">
-          {["home", "news", "achievements", "activities", "videos"].map(
-            (tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab as any)}
-                className={activeTab === tab ? "active" : ""}
-              >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
-              </button>
-            )
-          )}
+          {tabs.map((tab) => (
+            <Link
+              key={tab}
+              href={tab === "home" ? `/profiles/${slug}` : `/profiles/${slug}/${tab}`}
+              className={activeTab === tab ? "active" : ""}
+            >
+              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            </Link>
+          ))}
         </nav>
       </header>
 
       {/* ================= CONTENT ================= */}
       <div className="profile-content">
-        {/* HOME */}
-        {activeTab === "home" && (
-          <section className="profile-home">
-            {profile.shortBio && <p>{profile.shortBio}</p>}
-            {profile.detailedBio && <p>{profile.detailedBio}</p>}
-          </section>
-        )}
-
-        {/* NEWS – POLISHED, SAME AS MAIN NEWS */}
-        {activeTab === "news" && (
-          <section className="news-page">
-            {articles.length === 0 ? null : (
-              <ul className="news-list-page">
-                {articles.map((a) => (
-                  <li key={a.id} className="news-item">
-                    {a.coverImage && (
-                      <img
-                        src={getImageUrl(a.coverImage.url)!}
-                        alt={a.title}
-                        className="news-thumb"
-                      />
-                    )}
-
-                    <div className="news-info">
-                      <Link href={`/news/${a.slug}`}>
-                        <h3 className="news-title">{a.title}</h3>
-                      </Link>
-
-                      {a.publishedAt && (
-                        <div className="news-date">
-                          {new Date(a.publishedAt).toLocaleDateString()}
-                        </div>
-                      )}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-        )}
-
-        {/* ACHIEVEMENTS */}
-        {activeTab === "achievements" && (
-          <section>
-            <ul className="profile-list">
-              {achievements.map((a) => (
-                <li key={a.id}>
-                  <strong>
-                    {a.title}
-                    {a.year && ` (${a.year})`}
-                  </strong>
-                  {a.description && (
-                    <p>{richTextToPlainText(a.description)}</p>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        {/* ACTIVITIES */}
-        {activeTab === "activities" && (
-          <section>
-            <ul className="profile-list">
-              {activities.map((a) => (
-                <li key={a.id}>
-                  <strong>{a.title}</strong>
-                  {a.date && <span> ({a.date})</span>}
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        {/* VIDEOS */}
-        {activeTab === "videos" && (
-          <section>
-            {videos.map((v) => (
-              <div key={v.id} className="profile-video">
-                <h4>{v.title}</h4>
-                <iframe
-                  src={toEmbedUrl(v.embedUrl)}
-                  title={v.title}
-                  allowFullScreen
-                />
-              </div>
-            ))}
-          </section>
-        )}
+        {children}
       </div>
     </section>
   );

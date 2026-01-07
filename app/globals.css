@@ -1093,7 +1093,7 @@ body {
   align-self: flex-end;
 }
 
-.profile-tabs button {
+.profile-tabs a {
   background: none;
   border: none;
   font-weight: 600;
@@ -1101,9 +1101,10 @@ body {
   padding-bottom: 6px;
   border-bottom: 3px solid transparent;
   color: var(--text-secondary);
+  text-decoration: none;
 }
 
-.profile-tabs button.active {
+.profile-tabs a.active {
   border-bottom-color: var(--text-strong);
   color: var(--text-primary);
 }
@@ -1153,7 +1154,7 @@ body {
     justify-content: space-between;
     width: 100%;
   }
-  .profile-tabs button {
+  .profile-tabs a {
     font-size: 14px;
     padding-bottom: 4px;
   }
