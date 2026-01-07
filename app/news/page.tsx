@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { fetchFromStrapi } from "../../lib/strapi";
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -15,7 +16,7 @@ type Article = {
 
 export default async function NewsPage() {
   const res = await fetchFromStrapi(
-    "/articles?sort=publishedAt:desc&populate=coverImage"
+    "/articles?sort=publishedAt:desc&populate=coverImage&pagination[pageSize]=20"
   );
 
   const articles: Article[] = res.data;

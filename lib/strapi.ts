@@ -16,7 +16,7 @@ export async function fetchFromStrapi(
       "Content-Type": "application/json",
       ...(options.headers || {}),
     },
-    cache: "no-store",
+    next: { revalidate: 60 }, // Cache for 60 seconds
   });
 
   if (!res.ok) {

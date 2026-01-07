@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { fetchFromStrapi } from "../lib/strapi";
 import HeroSlider from "../components/HeroSlider";
 
@@ -115,10 +116,13 @@ export default async function HomePage() {
             <li key={a.id}>
               <Link href={`/news/${a.slug}`} className="news-row">
                 {a.coverImage && (
-                  <img
+                  <Image
                     className="news-thumb"
                     src={getImageUrl(a.coverImage.url)!}
                     alt={a.title}
+                    width={150}
+                    height={100}
+                    priority={false}
                   />
                 )}
 

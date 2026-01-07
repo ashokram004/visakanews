@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { fetchFromStrapi } from "../../lib/strapi";
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -16,7 +17,7 @@ type Profile = {
 
 export default async function ProfilesPage() {
   const data = await fetchFromStrapi(
-    "/profiles?filters[isActive][$eq]=true&sort=name:asc&populate=profileImage"
+    "/profiles?filters[isActive][$eq]=true&sort=name:asc&populate=profileImage&pagination[pageSize]=50"
   );
   
 
@@ -36,7 +37,7 @@ export default async function ProfilesPage() {
           >
             <div className="profile-card-row">
               {profile.profileImage && (
-                <img
+                <Image
                   src={
                     profile.profileImage.url.startsWith("http")
                       ? profile.profileImage.url
@@ -44,6 +45,9 @@ export default async function ProfilesPage() {
                   }
                   alt={profile.name}
                   className="profile-card-avatar"
+                  width={50}
+                  height={50}
+                  priority={false}
                 />
               )}
 

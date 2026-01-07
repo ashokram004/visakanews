@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback, memo } from "react";
 import Link from "next/link";
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -31,7 +31,7 @@ function getImageUrl(url?: string) {
 
 /* -------------------- Component -------------------- */
 
-export default function HeroSlider({ articles }: Props) {
+const HeroSlider = ({ articles }: Props) => {
   const [index, setIndex] = useState(0);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -58,13 +58,13 @@ export default function HeroSlider({ articles }: Props) {
 
   /* -------------------- Controls -------------------- */
 
-  function next() {
+  const next = useCallback(() => {
     setIndex((prev) => (prev + 1) % total);
-  }
+  }, [total]);
 
-  function prev() {
+  const prev = useCallback(() => {
     setIndex((prev) => (prev - 1 + total) % total);
-  }
+  }, [total]);
 
   return (
     <div className="hero-slider-wrapper">
@@ -112,4 +112,6 @@ export default function HeroSlider({ articles }: Props) {
       </div>
     </div>
   );
-}
+};
+
+export default memo(HeroSlider);
