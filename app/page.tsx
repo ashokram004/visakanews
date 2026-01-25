@@ -2,6 +2,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { fetchFromStrapi } from "../lib/strapi";
 import HeroSlider from "../components/HeroSlider";
+import FlashNews from "../components/FlashNews";
+import {
+  FacebookIcon,
+  TwitterIcon,
+  LinkedInIcon,
+  YouTubeIcon,
+} from "../components/FooterIcons";
 
 /* -------------------- Types -------------------- */
 
@@ -66,82 +73,41 @@ export default async function HomePage() {
   ].slice(0, 8);
 
   const heroArticles = homeArticles.slice(0, 3);
-  const moreArticles = homeArticles.slice(3, 8);
 
   return (
     <>
       {/* ================= FLASH NEWS ================= */}
-      {flashItems.length > 0 && (
-        <section className="flash-news">
-          <div className="flash-marquee">
-            <div className="flash-track">
-              {flashItems.map((f) => (
-                <span key={`a-${f.id}`} className="flash-item">
-                  <span className="flash-dot" />
-                  {f.headline}
-                </span>
-              ))}
-            </div>
-
-            {/* duplicate track for seamless loop */}
-            <div className="flash-track">
-              {flashItems.map((f) => (
-                <span key={`b-${f.id}`} className="flash-item">
-                  <span className="flash-dot" />
-                  {f.headline}
-                </span>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {flashItems.length > 0 && <FlashNews flashItems={flashItems} />}
 
       {/* ================= HERO ================= */}
       {heroArticles.length > 0 && (
         <HeroSlider articles={heroArticles} />
       )}
 
-      {/* ================= MORE NEWS ================= */}
-      <section className="home-section">
-        <div className="section-header">
-          <h2 className="section-title">More News</h2>
 
-          <Link href="/news" className="section-view-all">
-            View all →
-          </Link>
-        </div>
-
-        <ul className="news-list">
-          {moreArticles.map((a) => (
-            <li key={a.id}>
-              <Link href={`/news/${a.slug}`} className="news-row">
-                {a.coverImage && (
-                  <Image
-                    className="news-thumb"
-                    src={getImageUrl(a.coverImage.url)!}
-                    alt={a.title}
-                    width={150}
-                    height={100}
-                    priority={false}
-                  />
-                )}
-
-                <div className="news-text">
-                  <span className="news-title">{a.title}</span>
-                  <span className="news-date">
-                    {new Date(a.publishedAt).toLocaleDateString()}
-                  </span>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
 
       {/* ================= SMALL ADS ================= */}
       <section className="home-ads small-ads">
         <div className="ad-box small">Advertisement</div>
         <div className="ad-box small">Advertisement</div>
+      </section>
+
+      {/* ================= SOCIAL MEDIA ROW ================= */}
+      <section className="social-media-row">
+        <div className="social-icons">
+          <a href="https://facebook.com" target="_blank" aria-label="Facebook">
+            <FacebookIcon />
+          </a>
+          <a href="https://twitter.com" target="_blank" aria-label="Twitter">
+            <TwitterIcon />
+          </a>
+          <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn">
+            <LinkedInIcon />
+          </a>
+          <a href="https://youtube.com" target="_blank" aria-label="YouTube">
+            <YouTubeIcon />
+          </a>
+        </div>
       </section>
     </>
   );

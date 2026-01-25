@@ -16,6 +16,9 @@ type Profile = {
   profileImage?: {
     url: string;
   };
+  coverImage?: {
+    url: string;
+  };
 };
 
 type Props = {
@@ -39,11 +42,20 @@ export default function ProfileTabs({ profile, children }: Props) {
   const params = useParams();
   const slug = params.slug as string;
 
-  const tabs = ["home", "news", "achievements", "activities", "videos"];
+  const tabs = ["home", "news", "achievements", "videos"];
   const activeTab = pathname === `/profiles/${slug}` ? "home" : tabs.find(tab => pathname.endsWith(`/${tab}`)) || null;
 
   return (
     <section className="profile-detail-page">
+      {/* ================= COVER PICTURE ================= */}
+      <div className="profile-cover">
+        <img
+          src={getImageUrl(profile.coverImage?.url) || "/placeholder-cover.jpg"}
+          alt="Cover"
+          className="cover-image"
+        />
+      </div>
+
       {/* ================= HEADER ================= */}
       <header className="profile-header">
         <div className="profile-header-left">
@@ -69,7 +81,7 @@ export default function ProfileTabs({ profile, children }: Props) {
               href={tab === "home" ? `/profiles/${slug}` : `/profiles/${slug}/${tab}`}
               className={activeTab === tab ? "active" : ""}
             >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              {tab != "news" ? (tab.charAt(0).toUpperCase() + tab.slice(1)) : "Activites"}
             </Link>
           ))}
         </nav>

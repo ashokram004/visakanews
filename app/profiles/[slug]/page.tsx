@@ -8,7 +8,7 @@ export default async function ProfileHomePage({ params }: Props) {
   const { slug } = await params;
 
   const profileRes = await fetchFromStrapi(
-    `/profiles?filters[slug][$eq]=${slug}`
+    `/profiles?filters[slug][$eq]=${slug}&populate=coverImage&&populate=profileImage`
   );
 
   const profile = profileRes.data?.[0];

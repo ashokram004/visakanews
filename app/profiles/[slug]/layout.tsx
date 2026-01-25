@@ -22,7 +22,7 @@ export default async function ProfileLayout({ params, children }: Props) {
   const { slug } = await params;
 
   const profileRes = await fetchFromStrapi(
-    `/profiles?filters[slug][$eq]=${slug}&populate[profileImage]=true`
+    `/profiles?filters[slug][$eq]=${slug}&populate[profileImage]=true&populate[coverImage]=true`
   );
 
   const profile: Profile | undefined = profileRes.data?.[0];
