@@ -141,11 +141,10 @@ body {
   .home-ads.small-ads {
     grid-template-columns: 1fr 1fr;
     gap: 10px;
-    margin-bottom: 20px;
   }
 
   .ad-box.small {
-    height: 80px;
+    height: 100px;
     font-size: 12px;
   }
 }
@@ -1357,6 +1356,7 @@ body {
   align-items: center;
   padding: 5px 16px;
   background: var(--bg-primary);
+  height: 0px;
 }
 
 .social-icons {
@@ -1386,6 +1386,7 @@ body {
 @media (max-width: 768px) {
   .social-media-row {
     padding: 0px 12px;
+    height: 0px;
   }
 
   .social-icons {
