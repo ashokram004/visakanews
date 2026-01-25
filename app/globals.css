@@ -408,7 +408,7 @@ body {
   overflow: hidden;
   background: var(--bg-flash); /* Adapted */
   color: #fff; /* Always white on flash news */
-  padding: 10px 14px;
+  padding: 0px 14px;
   margin-bottom: 20px;
   max-width: 1200px;
   margin-left: auto;
@@ -418,6 +418,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+  height:min-content;
 }
 
 .flash-container {
