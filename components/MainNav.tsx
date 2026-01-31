@@ -114,7 +114,8 @@ export default function MainNav() {
       </div>
 
       {/* ========== RIGHT: SEARCH ========== */}
-      <div className={`nav-search ${searchOpen ? "open" : ""}`}>
+      {/* Search is now in header on mobile, so hide on mobile */}
+      <div className={`nav-search ${searchOpen ? "open" : ""} desktop-only`}>
         <form onSubmit={handleSearch}>
           <input
             type="text"

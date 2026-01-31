@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import MainNav from "./MainNav";
 import Footer from "./Footer";
+import SearchBar from "./SearchBar";
 
 type Props = {
   children: React.ReactNode;
@@ -65,6 +66,11 @@ export default function AppShell({ children }: Props) {
             </div>
 
             <div className="header-ad">Header Advertisement</div>
+
+            {/* Mobile Search Bar */}
+            <div className="mobile-search mobile-only">
+              <SearchBar />
+            </div>
           </header>
 
           {/* ================= NAV ================= */}
