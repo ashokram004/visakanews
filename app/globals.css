@@ -518,6 +518,12 @@ body {
   padding: 5px 0;
 }
 
+.flash-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .flash-dot {
   width: 8px;
   height: 8px;
@@ -531,6 +537,13 @@ body {
   0% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.4); opacity: 0.6; }
   100% { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 1260px) {
+  .flash-news {
+    font-size: 12px;
+  }
+
 }
 
 /* ================= HERO SLIDER ================= */

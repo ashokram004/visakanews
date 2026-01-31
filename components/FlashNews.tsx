@@ -39,7 +39,7 @@ export default function FlashNews({ flashItems }: FlashNewsProps) {
           {flashItems.map((f) => (
             <div key={f.id} className="flash-item">
               <span className="flash-dot" />
-              {f.headline}
+              <span className="flash-text">{f.headline}</span>
             </div>
           ))}
         </div>
