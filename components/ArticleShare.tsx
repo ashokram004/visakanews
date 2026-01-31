@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import {
   FaWhatsapp,
   FaTwitter,
   FaFacebookF,
   FaLink,
+  FaShareAlt,
 } from "react-icons/fa";
 
 type Props = {
@@ -12,49 +14,60 @@ type Props = {
 };
 
 export default function ArticleShare({ url }: Props) {
+  const [showIcons, setShowIcons] = useState(false);
+
   return (
     <div className="article-share">
-      <span className="share-label">Share</span>
+      <button
+        className="share-toggle"
+        onClick={() => setShowIcons(!showIcons)}
+        aria-label="Share"
+      >
+        <FaShareAlt />
+        <span>Share</span>
+      </button>
 
-      <div className="share-icons">
-        <a
-          href={`https://wa.me/?text=${encodeURIComponent(url)}`}
-          target="_blank"
-          aria-label="WhatsApp"
-          className="share-btn whatsapp"
-        >
-          <FaWhatsapp />
-        </a>
+      {showIcons && (
+        <div className="share-icons">
+          <a
+            href={`https://wa.me/?text=${encodeURIComponent(url)}`}
+            target="_blank"
+            aria-label="WhatsApp"
+            className="share-btn whatsapp"
+          >
+            <FaWhatsapp />
+          </a>
 
-        <a
-          href={`https://twitter.com/intent/tweet?url=${url}`}
-          target="_blank"
-          aria-label="Twitter"
-          className="share-btn twitter"
-        >
-          <FaTwitter />
-        </a>
+          <a
+            href={`https://twitter.com/intent/tweet?url=${url}`}
+            target="_blank"
+            aria-label="Twitter"
+            className="share-btn twitter"
+          >
+            <FaTwitter />
+          </a>
 
-        <a
-          href={`https://www.facebook.com/sharer/sharer.php?u=${url}`}
-          target="_blank"
-          aria-label="Facebook"
-          className="share-btn facebook"
-        >
-          <FaFacebookF />
-        </a>
+          <a
+            href={`https://www.facebook.com/sharer/sharer.php?u=${url}`}
+            target="_blank"
+            aria-label="Facebook"
+            className="share-btn facebook"
+          >
+            <FaFacebookF />
+          </a>
 
-        <button
-          className="share-btn link"
-          aria-label="Copy link"
-          onClick={() => {
-            navigator.clipboard.writeText(url);
-            alert("Link copied!");
-          }}
-        >
-          <FaLink />
-        </button>
-      </div>
+          <button
+            className="share-btn link"
+            aria-label="Copy link"
+            onClick={() => {
+              navigator.clipboard.writeText(url);
+              alert("Link copied!");
+            }}
+          >
+            <FaLink />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -62,6 +62,7 @@ export default async function ProfilesPage() {
                 >
                   {profile.profileType}
                 </span>
+                <div className="profile-read-more">read more...</div>
               </div>
             </div>
           </Link>

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { toEmbedUrl } from "@/lib/video";
 import { fetchFromStrapi } from "../../../lib/strapi";
 import ArticleShare from "@/components/ArticleShare";
@@ -148,6 +149,20 @@ export default async function ArticleDetailPage({ params }: any) {
 
   const articleUrl = `https://visakanews.com/news/${article.slug}`;
 
+  // Fetch latest 6 articles to account for potential exclusion of current article
+  const latestRes = await fetchFromStrapi(
+    "/articles?sort=publishedAt:desc&pagination[pageSize]=6&populate=coverImage"
+  );
+  const allLatest = latestRes.data || [];
+
+  // Exclude current article if it's in the latest 5, otherwise take first 5
+  let latestArticles = allLatest.filter((a: Article) => a.id !== article.id);
+  if (latestArticles.length < 5) {
+    latestArticles = allLatest.slice(0, 5);
+  } else {
+    latestArticles = latestArticles.slice(0, 5);
+  }
+
   return (
     <article className="article-page">
       {article.primaryCategory && (
@@ -160,9 +175,6 @@ export default async function ArticleDetailPage({ params }: any) {
         {article.author?.name && <span>By {article.author.name} • </span>}
         {new Date(article.publishedAt).toLocaleDateString()}
       </div>
-
-      {/* SHARE ICONS */}
-      <ArticleShare url={articleUrl} />
 
       {article.coverImage && (
         <img
@@ -177,8 +189,50 @@ export default async function ArticleDetailPage({ params }: any) {
         {renderContent(article.content)}
       </div>
 
+      {/* SHARE ICONS */}
+      <ArticleShare url={articleUrl} />
+
       {/* INLINE AD */}
       <div className="article-ad">Advertisement</div>
+
+      {/* LATEST NEWS SECTION */}
+      <section className="article-latest-news">
+        <h2 className="section-title">Latest News</h2>
+        {latestArticles.length > 0 ? (
+          <>
+            <div className="latest-news-list">
+              {latestArticles.map((newsItem: Article) => (
+                <Link
+                  key={newsItem.id}
+                  href={`/news/${newsItem.slug}`}
+                  className="latest-news-item"
+                >
+                  {newsItem.coverImage && (
+                    <img
+                      src={newsItem.coverImage.url}
+                      alt={newsItem.coverImage.alternativeText || ""}
+                      className="latest-news-thumb"
+                    />
+                  )}
+                  <div className="latest-news-content">
+                    <h3 className="latest-news-title">{newsItem.title}</h3>
+                    <span className="latest-news-date">
+                      {new Date(newsItem.publishedAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <div className="view-all-wrap">
+              <Link href="/news" className="view-all-link">
+                More
+              </Link>
+            </div>
+          </>
+        ) : (
+          <p>No latest news available.</p>
+        )}
+      </section>
 
       {/* GALLERY / VIDEOS (KEPT) */}
       {article.videos && article.videos.length > 0 && (

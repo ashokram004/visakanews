@@ -4,10 +4,13 @@ import { fetchFromStrapi } from "../lib/strapi";
 import HeroSlider from "../components/HeroSlider";
 import FlashNews from "../components/FlashNews";
 import {
+  GmailIcon,
+  YouTubeIcon,
+  WhatsAppIcon,
   FacebookIcon,
+  InstagramIcon,
   TwitterIcon,
   LinkedInIcon,
-  YouTubeIcon,
 } from "../components/FooterIcons";
 
 /* -------------------- Types -------------------- */
@@ -95,17 +98,26 @@ export default async function HomePage() {
       {/* ================= SOCIAL MEDIA ROW ================= */}
       <section className="social-media-row">
         <div className="social-icons">
+          <a href="mailto:visakanews@gmail.com" aria-label="Email">
+            <GmailIcon />
+          </a>
+          <a href="https://wa.me/918247829025" target="_blank" aria-label="WhatsApp">
+            <WhatsAppIcon />
+          </a>
           <a href="https://facebook.com" target="_blank" aria-label="Facebook">
             <FacebookIcon />
+          </a>
+          <a href="https://youtube.com" target="_blank" aria-label="Instagram">
+            <InstagramIcon />
           </a>
           <a href="https://twitter.com" target="_blank" aria-label="Twitter">
             <TwitterIcon />
           </a>
-          <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn">
-            <LinkedInIcon />
-          </a>
           <a href="https://youtube.com" target="_blank" aria-label="YouTube">
             <YouTubeIcon />
+          </a>
+          <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn">
+            <LinkedInIcon />
           </a>
         </div>
       </section>

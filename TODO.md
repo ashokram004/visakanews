@@ -1,7 +1,15 @@
-# TODO: Implement coverImage fetching for individual profile page
+# TODO: Fix Social Media Icons
 
-- [x] Update fetch URL in `app/profiles/[slug]/page.tsx` to populate coverImage from Strapi
-- [x] Update Profile type in `app/profiles/[slug]/ProfileTabs.tsx` to include coverImage
-- [x] Replace cover image placeholder in `ProfileTabs.tsx` with fetched coverImage
-- [x] Update `.cover-image` CSS in `app/globals.css` to fit image within bounds (add object-fit: cover and height)
-- [x] Test the implementation on the profile page
+- [x] Replace GmailIcon SVG with a simple mail/envelope icon in components/FooterIcons.tsx
+- [x] Update hover background color in app/globals.css from red to light gray (#e0e0e0)
+- [x] Fix Gmail link to mailto:visakanews@gmail.com and update aria-label in app/page.tsx
+- [x] Update WhatsApp link to https://wa.me/918247829025 and correct aria-label in app/page.tsx
+- [x] Test the changes to ensure icons display correctly and links work
+
+# TODO: Add Latest News Section to Article Page
+
+- [x] Add section after bottom ad in app/news/[slug]/page.tsx
+- [x] Fetch latest 6 articles and exclude current article if in top 5
+- [x] Display 5 news items with thumbnails, titles, and dates
+- [x] Add "More" button linking to /news
+- [x] Add CSS styles for the new section in app/globals.css
