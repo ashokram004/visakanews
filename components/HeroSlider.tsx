@@ -83,7 +83,6 @@ const HeroSlider = ({ articles }: Props) => {
               backgroundImage: `url(${getImageUrl(a.coverImage?.url)})`,
             }}
           >
-            <div className="hero-overlay" />
             <div className="hero-content">
               <h2>{a.title}</h2>
             </div>
