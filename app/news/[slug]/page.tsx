@@ -225,7 +225,7 @@ export default async function ArticleDetailPage({ params }: any) {
             </div>
             <div className="view-all-wrap">
               <Link href="/news" className="view-all-link">
-                More
+                More News
               </Link>
             </div>
           </>

@@ -30,6 +30,7 @@ type Article = {
   isFeatured?: boolean;
   coverImage?: {
     url: string;
+    alternativeText?: string; // Added alternativeText property
   };
   publishedAt: string;
 };
@@ -77,6 +78,8 @@ export default async function HomePage() {
 
   const heroArticles = homeArticles.slice(0, 3);
 
+  const latestArticles = homeArticles.slice(3, 8);
+
   return (
     <>
       {/* ================= FLASH NEWS ================= */}
@@ -87,7 +90,40 @@ export default async function HomePage() {
         <HeroSlider articles={heroArticles} />
       )}
 
-
+      {/* ================= LATEST NEWS ================= */}
+      {latestArticles.length > 0 && (
+        <section className="article-latest-news">
+          <h2 className="section-title">Latest News</h2>
+          <div className="latest-news-list">
+            {latestArticles.map((newsItem: Article) => (
+              <Link
+                key={newsItem.id}
+                href={`/news/${newsItem.slug}`}
+                className="latest-news-item"
+              >
+                {newsItem.coverImage && (
+                  <img
+                    src={getImageUrl(newsItem.coverImage.url) || ""}
+                    alt={newsItem.coverImage.alternativeText || ""}
+                    className="latest-news-thumb"
+                  />
+                )}
+                <div className="latest-news-content">
+                  <h3 className="latest-news-title">{newsItem.title}</h3>
+                  <span className="latest-news-date">
+                    {new Date(newsItem.publishedAt).toLocaleDateString()}
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <div className="view-all-wrap">
+            <Link href="/news" className="view-all-link">
+              More News
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* ================= SMALL ADS ================= */}
       <section className="home-ads small-ads">

@@ -1,15 +1,7 @@
-# TODO: Fix Social Media Icons
+# TODO: Add Next 5 News After Hero Slider on Home Page
 
-- [x] Replace GmailIcon SVG with a simple mail/envelope icon in components/FooterIcons.tsx
-- [x] Update hover background color in app/globals.css from red to light gray (#e0e0e0)
-- [x] Fix Gmail link to mailto:visakanews@gmail.com and update aria-label in app/page.tsx
-- [x] Update WhatsApp link to https://wa.me/918247829025 and correct aria-label in app/page.tsx
-- [x] Test the changes to ensure icons display correctly and links work
-
-# TODO: Add Latest News Section to Article Page
-
-- [x] Add section after bottom ad in app/news/[slug]/page.tsx
-- [x] Fetch latest 6 articles and exclude current article if in top 5
-- [x] Display 5 news items with thumbnails, titles, and dates
-- [x] Add "More" button linking to /news
-- [x] Add CSS styles for the new section in app/globals.css
+## Tasks
+- [x] Add `const latestArticles = homeArticles.slice(3, 8);` after `heroArticles` in `app/page.tsx`
+- [x] Insert the "Latest News" section in JSX after the HeroSlider component in `app/page.tsx`
+- [ ] Test the home page to ensure the new section renders correctly and the "More" button links to `/news`
+- [ ] Verify that the displayed articles are the next 5 after the hero's top 3
