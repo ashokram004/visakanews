@@ -703,8 +703,8 @@ body {
   border-bottom: 2px solid var(--border-strong);
   padding-bottom: 6px;
   font-size: 18px;
-  color: black;
-  background: black;
+  color: red;
+  background: red;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1456,32 +1456,35 @@ body {
 
 .profile-tabs {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-self: flex-end;
   margin-top: 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  flex-wrap: nowrap;
+}
+
+.profile-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .profile-tabs a {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-light);
+  background: none;
+  border: none;
   font-weight: 600;
   cursor: pointer;
-  padding: 8px 16px;
-  border-radius: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
   color: var(--text-secondary);
   text-decoration: none;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .profile-tabs a.active {
   background: var(--color-accent);
   color: var(--text-inverse);
-  border-color: var(--color-accent);
-}
-
-.profile-tabs a:hover {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
 }
 
 .profile-news-list,
@@ -1532,10 +1535,12 @@ profile-list {
     align-self: stretch;
     justify-content: space-between;
     width: 100%;
+    gap: 0px;
   }
   .profile-tabs a {
     font-size: 14px;
     padding-bottom: 4px;
+    padding: 4px 6px;
   }
   .profile-video iframe {
     height: 220px;
@@ -1687,18 +1692,42 @@ profile-list {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: var(--bg-tertiary);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-primary);
+  color: #fff;
   transition: all 0.2s ease;
   text-decoration: none;
 }
 
 .social-icons a:hover {
-  background: #e0e0e0;
-  color: var(--text-primary);
+  opacity: 0.85;
+}
+
+.social-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  font-size: 16px;
+}
+
+.social-btn.whatsapp { background: #25d366; }
+.social-btn.twitter  { background: #000000; }
+.social-btn.facebook { background: #1877f2; }
+.social-btn.email    { background: #ea4335; }
+.social-btn.linkedin { background: #0077b5; }
+.social-btn.youtube  { background: #ff0000; }
+.social-btn.instagram { background: #e4405f; }
+.social-btn:hover { opacity: 0.85; }
+
+@media (prefers-color-scheme: dark) {
+  .social-btn.twitter { background: #ffffff; color: #000000; }
+  .share-btn.twitter { background: #ffffff; color: #000000; }
 }
 
 @media (max-width: 768px) {

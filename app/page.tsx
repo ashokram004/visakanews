@@ -4,14 +4,14 @@ import { fetchFromStrapi } from "../lib/strapi";
 import HeroSlider from "../components/HeroSlider";
 import FlashNews from "../components/FlashNews";
 import {
-  GmailIcon,
-  YouTubeIcon,
-  WhatsAppIcon,
-  FacebookIcon,
-  InstagramIcon,
-  XIcon,
-  LinkedInIcon,
-} from "../components/FooterIcons";
+  FaEnvelope,
+  FaYoutube,
+  FaWhatsapp,
+  FaFacebookF,
+  FaInstagram,
+  FaXTwitter,
+  FaLinkedinIn,
+} from "react-icons/fa6";
 
 /* -------------------- Types -------------------- */
 
@@ -149,26 +149,26 @@ export default async function HomePage() {
       {/* ================= SOCIAL MEDIA ROW ================= */}
       <section className="social-media-row">
         <div className="social-icons">
-          <a href={author.mail || "mailto:"} aria-label="Email">
-            <GmailIcon />
+          <a href={author.mail || "mailto:"} aria-label="Email" className="social-btn email">
+            <FaEnvelope />
           </a>
-          <a href={author.whatsapp || "https://wa.me/"} target="_blank" aria-label="WhatsApp">
-            <WhatsAppIcon />
+          <a href={author.whatsapp || "https://wa.me/"} target="_blank" aria-label="WhatsApp" className="social-btn whatsapp">
+            <FaWhatsapp />
           </a>
-          <a href={author.facebook || "https://facebook.com"} target="_blank" aria-label="Facebook">
-            <FacebookIcon />
+          <a href={author.facebook || "https://facebook.com"} target="_blank" aria-label="Facebook" className="social-btn facebook">
+            <FaFacebookF />
           </a>
-          <a href={author.instagram || "https://instagram.com"} target="_blank" aria-label="Instagram">
-            <InstagramIcon />
+          <a href={author.instagram || "https://instagram.com"} target="_blank" aria-label="Instagram" className="social-btn instagram">
+            <FaInstagram />
           </a>
-          <a href={author.twitter || "https://x.com"} target="_blank" aria-label="X">
-            <XIcon />
+          <a href={author.twitter || "https://x.com"} target="_blank" aria-label="X" className="social-btn twitter">
+            <FaXTwitter />
           </a>
-          <a href={author.youtube || "https://youtube.com"} target="_blank" aria-label="YouTube">
-            <YouTubeIcon />
+          <a href={author.youtube || "https://youtube.com"} target="_blank" aria-label="YouTube" className="social-btn youtube">
+            <FaYoutube />
           </a>
-          <a href={author.linkedin || "https://linkedin.com"} target="_blank" aria-label="LinkedIn">
-            <LinkedInIcon />
+          <a href={author.linkedin || "https://linkedin.com"} target="_blank" aria-label="LinkedIn" className="social-btn linkedin">
+            <FaLinkedinIn />
           </a>
         </div>
       </section>
