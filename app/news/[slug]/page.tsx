@@ -50,6 +50,13 @@ type Article = {
   videos?: Video[];
 };
 
+function getImageUrl(url?: string) {
+  if (!url) return null;
+  return url.startsWith("http")
+    ? url
+    : STRAPI_URL + url;
+}
+
 /* -------------------- Helpers -------------------- */
 
 function renderContent(blocks: ContentBlock[]) {
@@ -95,14 +102,12 @@ function renderContent(blocks: ContentBlock[]) {
 
     /* ---------- IMAGE ---------- */
     if (block.type === "image" && block.image?.url) {
-      const rawUrl = block.image.url;
-
-      const imageUrl = rawUrl;
+      const imageUrl = getImageUrl(block.image.url);
 
       return (
         <figure key={index} style={{ margin: "24px 0" }}>
           <img
-            src={imageUrl}
+            src={imageUrl || ""}
             alt={block.image.alternativeText || ""}
             style={{
               maxWidth: "100%",
@@ -181,7 +186,7 @@ export default async function ArticleDetailPage({ params }: any) {
       {article.coverImage && (
         <img
           className="article-cover"
-          src={article.coverImage.url}
+          src={getImageUrl(article.coverImage.url) || ""}
           alt={article.coverImage.alternativeText || ""}
         />
       )}
@@ -227,7 +232,7 @@ export default async function ArticleDetailPage({ params }: any) {
                 >
                   {newsItem.coverImage && (
                     <img
-                      src={newsItem.coverImage.url}
+                      src={getImageUrl(newsItem.coverImage.url) || ""}
                       alt={newsItem.coverImage.alternativeText || ""}
                       className="latest-news-thumb"
                     />

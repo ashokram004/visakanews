@@ -17,9 +17,8 @@ type Profile = {
 
 export default async function ProfilesPage() {
   const data = await fetchFromStrapi(
-    "/profiles?filters[isActive][$eq]=true&sort=name:asc&populate=profileImage&pagination[pageSize]=50"
+    "/profiles?filters[isActive][$eq]=true&sort=name:asc&populate[profileImage]=true&pagination[pageSize]=50"
   );
-  
 
   const profiles: Profile[] = data.data.sort((a: { name: string; }, b: { name: any; }) =>
     a.name.localeCompare(b.name)
@@ -37,7 +36,7 @@ export default async function ProfilesPage() {
           >
             <div className="profile-card-row">
               {profile.profileImage && (
-                <Image
+                <img
                   src={
                     profile.profileImage.url.startsWith("http")
                       ? profile.profileImage.url
@@ -45,9 +44,6 @@ export default async function ProfilesPage() {
                   }
                   alt={profile.name}
                   className="profile-card-avatar"
-                  width={50}
-                  height={50}
-                  priority={false}
                 />
               )}
 
