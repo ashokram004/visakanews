@@ -8,7 +8,7 @@ type Profile = {
   id: number;
   name: string;
   slug: string;
-  profileType: "POLITICIAN" | "CELEBRITY";
+  profileType: "POLITICIAN" | "CELEBRITY" | "ACTOR" | "INFLUENCER" | "";
   isActive: boolean;
   profileImage?: {
     url: string;
@@ -50,11 +50,7 @@ export default async function ProfilesPage() {
               <div className="profile-card-info">
                 <div className="profile-card-name">{profile.name}</div>
                 <span
-                  className={`profile-badge ${
-                    profile.profileType === "POLITICIAN"
-                      ? "politician"
-                      : "celebrity"
-                  }`}
+                  className="profile-badge"
                 >
                   {profile.profileType}
                 </span>

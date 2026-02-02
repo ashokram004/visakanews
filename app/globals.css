@@ -1250,8 +1250,7 @@ body {
   text-transform: uppercase;
 }
 
-.profile-badge.politician { background: #c71010; color: #fff; }
-.profile-badge.celebrity { background: #2e64d8; color: #fff; }
+.profile-badge { background: #c71010; color: #fff; }
 
 /* Compact Profiles */
 .profiles-grid.compact {
@@ -1347,15 +1346,15 @@ body {
 
 .profile-cover {
   width: 100%;
-  height: 150px;
-  overflow: hidden;
-  margin-bottom: 20px;
+  height: 200px;
+  margin-top: -20px;
+  margin-bottom: 10px;
 }
 
 .cover-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: fill;
 }
 
 .profile-side {
@@ -1508,7 +1507,7 @@ profile-list {
   margin-top: -10px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1268px) {
   .profile-header {
     flex-direction: column;
     align-items: flex-start;
@@ -1545,7 +1544,7 @@ profile-list {
     font-size: 16px;
   }
   .profile-cover {
-    height: 120px;
+    height: 150px;
     width: 110%;
     margin-top: -20px;
     margin-left: -20px;
