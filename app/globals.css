@@ -99,6 +99,7 @@ body {
 
 .site-main {
   padding: 20px 16px;
+  flex: 1;
 }
 
 /* ================= ADS ================= */

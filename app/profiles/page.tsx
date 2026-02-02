@@ -17,12 +17,12 @@ type Profile = {
 
 export default async function ProfilesPage() {
   const data = await fetchFromStrapi(
-    "/profiles?filters[isActive][$eq]=true&sort=name:asc&populate[profileImage]=true&pagination[pageSize]=50"
+    "/profiles?filters[isActive][$eq]=true&sort=name:asc&populate=coverImage&&populate=profileImage&pagination[pageSize]=50"
   );
-
+  
   const profiles: Profile[] = data.data.sort((a: { name: string; }, b: { name: any; }) =>
     a.name.localeCompare(b.name)
-  );  
+  );
 
 
   return (

@@ -32,6 +32,9 @@ export default function AppShell({ children }: Props) {
               <div className="profile-image-placeholder bottom">Profile Image Left</div>
               <div className="profile-image-placeholder bottom">Profile Image Right</div>
             </div>
+
+            {/* ================= FOOTER ================= */}
+            <Footer />
           </div>
 
           {/* Right side images - Desktop only */}
