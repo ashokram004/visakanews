@@ -3,11 +3,11 @@
 import { useState } from "react";
 import {
   FaWhatsapp,
-  FaTwitter,
+  FaXTwitter ,
   FaFacebookF,
   FaLink,
-  FaShareAlt,
-} from "react-icons/fa";
+  FaShare
+} from "react-icons/fa6";
 
 type Props = {
   url: string;
@@ -23,7 +23,7 @@ export default function ArticleShare({ url }: Props) {
         onClick={() => setShowIcons(!showIcons)}
         aria-label="Share"
       >
-        <FaShareAlt />
+        <FaShare />
         <span>Share</span>
       </button>
 
@@ -39,12 +39,12 @@ export default function ArticleShare({ url }: Props) {
           </a>
 
           <a
-            href={`https://twitter.com/intent/tweet?url=${url}`}
+            href={`https://x.com/intent/tweet?url=${url}`}
             target="_blank"
-            aria-label="Twitter"
+            aria-label="X"
             className="share-btn twitter"
           >
-            <FaTwitter />
+            <FaXTwitter />
           </a>
 
           <a

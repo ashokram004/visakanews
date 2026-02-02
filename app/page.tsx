@@ -9,7 +9,7 @@ import {
   WhatsAppIcon,
   FacebookIcon,
   InstagramIcon,
-  TwitterIcon,
+  XIcon,
   LinkedInIcon,
 } from "../components/FooterIcons";
 
@@ -146,8 +146,8 @@ export default async function HomePage() {
           <a href="https://youtube.com" target="_blank" aria-label="Instagram">
             <InstagramIcon />
           </a>
-          <a href="https://twitter.com" target="_blank" aria-label="Twitter">
-            <TwitterIcon />
+          <a href="https://x.com" target="_blank" aria-label="X">
+            <XIcon />
           </a>
           <a href="https://youtube.com" target="_blank" aria-label="YouTube">
             <YouTubeIcon />
