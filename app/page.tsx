@@ -11,6 +11,7 @@ import {
   FaInstagram,
   FaXTwitter,
   FaLinkedinIn,
+  FaTelegram
 } from "react-icons/fa6";
 
 /* -------------------- Types -------------------- */
@@ -43,6 +44,7 @@ type Author = {
   youtube?: string;
   twitter?: string;
   mail?: string;
+  telegram?: string;
 };
 
 /* -------------------- Helpers -------------------- */
@@ -166,6 +168,9 @@ export default async function HomePage() {
           </a>
           <a href={author.youtube || "https://youtube.com"} target="_blank" aria-label="YouTube" className="social-btn youtube">
             <FaYoutube />
+          </a>
+          <a href={author.telegram ? `https://t.me/${author.telegram}` : "https://t.me"} target="_blank" aria-label="Telegram" className="social-btn telegram">
+            <FaTelegram />
           </a>
           <a href={author.linkedin || "https://linkedin.com"} target="_blank" aria-label="LinkedIn" className="social-btn linkedin">
             <FaLinkedinIn />
