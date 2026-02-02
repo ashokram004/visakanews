@@ -5,7 +5,7 @@ type Profile = {
   id: number;
   name: string;
   slug: string;
-  profileType: "POLITICIAN" | "CELEBRITY";
+  profileType: string;
   shortBio: string;
   detailedBio?: string;
   profileImage?: {

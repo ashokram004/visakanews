@@ -8,7 +8,7 @@ type Profile = {
   id: number;
   name: string;
   slug: string;
-  profileType: "POLITICIAN" | "CELEBRITY" | "ACTOR" | "INFLUENCER" | "";
+  profileType: string;
   isActive: boolean;
   profileImage?: {
     url: string;

@@ -10,7 +10,7 @@ const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL;
 
 type Profile = {
   name: string;
-  profileType: "POLITICIAN" | "ACTOR" | "CELEBRITY";
+  profileType: string;
   shortBio: string;
   detailedBio?: string;
   profileImage?: {

@@ -19,7 +19,7 @@ type Profile = {
   id: number;
   name: string;
   slug: string;
-  profileType: "POLITICIAN" | "CELEBRITY";
+  profileType: string;
   profileImage?: {
     url: string;
   };
