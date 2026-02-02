@@ -1475,7 +1475,7 @@ body {
   font-weight: 600;
   cursor: pointer;
   padding: 4px 12px;
-  border-radius: 20px;
+  border-radius: 10px;
   color: var(--text-secondary);
   text-decoration: none;
   transition: all 0.2s ease;
@@ -1541,6 +1541,7 @@ profile-list {
     font-size: 14px;
     padding-bottom: 4px;
     padding: 4px 6px;
+    border-radius: 5px;
   }
   .profile-video iframe {
     height: 220px;
