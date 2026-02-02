@@ -398,8 +398,7 @@ body {
 }
 
 .main-nav a.active {
-  border-bottom: 3px solid var(--border-strong);
-  padding-bottom: 4px;
+  color: var(--color-accent);
 }
 
 .main-nav a.nav-highlight {
@@ -408,7 +407,7 @@ body {
 
 .main-nav a.nav-highlight.active {
   background: var(--border-light); /* #ececec -> var */
-  border-bottom: 3px solid var(--border-strong);
+  color: var(--color-accent);
 }
 
 /* Nav Search */
@@ -1228,6 +1227,17 @@ body {
 .profile-name {
   font-size: 18px;
   font-weight: 600;
+}
+
+.profile-detailed-bio {
+  width: 100%;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  display: block;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .profile-badge {

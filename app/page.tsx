@@ -35,6 +35,16 @@ type Article = {
   publishedAt: string;
 };
 
+type Author = {
+  whatsapp?: string;
+  linkedin?: string;
+  facebook?: string;
+  instagram?: string;
+  youtube?: string;
+  twitter?: string;
+  mail?: string;
+};
+
 /* -------------------- Helpers -------------------- */
 
 function getImageUrl(url?: string) {
@@ -47,9 +57,13 @@ function getImageUrl(url?: string) {
 /* -------------------- Page -------------------- */
 
 export default async function HomePage() {
+  /* -------------------- Author -------------------- */
+  const authorRes = await fetchFromStrapi("/authors?pagination[pageSize]=1");
+  const author: Author = authorRes.data?.[0] || {};
+
   /* -------------------- Flash News -------------------- */
   const flashRes = await fetchFromStrapi(
-    "/flash-news?filters[isActive][$eq]=true&sort=order:asc"
+    "/flash-news?filters[isActive][$eq]=true&sort=order:asc&populate=article"
   );
   const flashItems: FlashItem[] = flashRes.data;
 
@@ -131,28 +145,29 @@ export default async function HomePage() {
         </section>
       )}
 
+
       {/* ================= SOCIAL MEDIA ROW ================= */}
       <section className="social-media-row">
         <div className="social-icons">
-          <a href="mailto:visakanews@gmail.com" aria-label="Email">
+          <a href={author.mail || "mailto:"} aria-label="Email">
             <GmailIcon />
           </a>
-          <a href="https://wa.me/918247829025" target="_blank" aria-label="WhatsApp">
+          <a href={author.whatsapp || "https://wa.me/"} target="_blank" aria-label="WhatsApp">
             <WhatsAppIcon />
           </a>
-          <a href="https://facebook.com" target="_blank" aria-label="Facebook">
+          <a href={author.facebook || "https://facebook.com"} target="_blank" aria-label="Facebook">
             <FacebookIcon />
           </a>
-          <a href="https://youtube.com" target="_blank" aria-label="Instagram">
+          <a href={author.instagram || "https://instagram.com"} target="_blank" aria-label="Instagram">
             <InstagramIcon />
           </a>
-          <a href="https://x.com" target="_blank" aria-label="X">
+          <a href={author.twitter || "https://x.com"} target="_blank" aria-label="X">
             <XIcon />
           </a>
-          <a href="https://youtube.com" target="_blank" aria-label="YouTube">
+          <a href={author.youtube || "https://youtube.com"} target="_blank" aria-label="YouTube">
             <YouTubeIcon />
           </a>
-          <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn">
+          <a href={author.linkedin || "https://linkedin.com"} target="_blank" aria-label="LinkedIn">
             <LinkedInIcon />
           </a>
         </div>

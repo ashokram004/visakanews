@@ -1,10 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface FlashItem {
   id: number;
   headline: string;
+  article?: {
+    slug: string;
+  };
 }
 
 interface FlashNewsProps {
@@ -12,6 +16,7 @@ interface FlashNewsProps {
 }
 
 export default function FlashNews({ flashItems }: FlashNewsProps) {
+  const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -23,6 +28,12 @@ export default function FlashNews({ flashItems }: FlashNewsProps) {
 
     return () => clearInterval(interval);
   }, [flashItems.length]);
+
+  const handleItemClick = (item: FlashItem) => {
+    if (item.article?.slug) {
+      router.push(`/news/${item.article.slug}`);
+    }
+  };
 
   if (flashItems.length === 0) return null;
 
@@ -37,7 +48,12 @@ export default function FlashNews({ flashItems }: FlashNewsProps) {
           }}
         >
           {flashItems.map((f) => (
-            <div key={f.id} className="flash-item">
+            <div
+              key={f.id}
+              className="flash-item"
+              onClick={() => handleItemClick(f)}
+              style={{ cursor: f.article?.slug ? 'pointer' : 'default' }}
+            >
               <span className="flash-dot" />
               <span className="flash-text">{f.headline}</span>
             </div>

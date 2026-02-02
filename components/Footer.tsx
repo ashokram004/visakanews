@@ -3,12 +3,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { fetchFromStrapi } from "@/lib/strapi";
-import {
-  FacebookIcon,
-  TwitterIcon,
-  LinkedInIcon,
-  YouTubeIcon,
-} from "./FooterIcons";
 
 interface Author {
   name?: string;

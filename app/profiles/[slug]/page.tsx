@@ -1,8 +1,57 @@
 import { fetchFromStrapi } from "../../../lib/strapi";
+import { toEmbedUrl } from "../../../lib/video";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
+
+type ContentBlock = {
+  type: string;
+  children?: any[];
+  image?: {
+    url: string;
+    alternativeText?: string;
+  };
+};
+
+/* -------------------- Helpers -------------------- */
+
+function renderContent(blocks: ContentBlock[]) {
+  return blocks.map((block, index) => {
+    /* ---------- PARAGRAPH ---------- */
+    if (block.type === "paragraph" && block.children) {
+      return (
+        <p key={index}>
+          {block.children.map((c: any, i: number) => {
+            if (!c.text) return null;
+            return <span key={i}>{c.text} </span>;
+          })}
+        </p>
+      );
+    }
+
+    /* ---------- IMAGE ---------- */
+    if (block.type === "image" && block.image?.url) {
+      return (
+        <figure key={index} style={{ margin: "24px 0" }}>
+          <img
+            src={block.image.url}
+            alt={block.image.alternativeText || ""}
+            style={{
+              maxWidth: "100%",
+              width: "100%",
+              height: "auto",
+              display: "block",
+              margin: "0 auto",
+            }}
+          />
+        </figure>
+      );
+    }
+
+    return null;
+  });
+}
 
 export default async function ProfileHomePage({ params }: Props) {
   const { slug } = await params;
@@ -20,7 +69,23 @@ export default async function ProfileHomePage({ params }: Props) {
   return (
     <section className="profile-home">
       {profile.shortBio && <p>{profile.shortBio}</p>}
-      {profile.detailedBio && <p>{profile.detailedBio}</p>}
+      {profile.homeVideo && (
+        <div className="profile-home-video">
+          <iframe
+            src={toEmbedUrl(profile.homeVideo)}
+            width="100%"
+            height="420"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </div>
+      )}
+      {profile.detailedBio && (
+        <div className="profile-detailed-bio">
+          {renderContent(profile.detailedBio)}
+        </div>
+      )}
     </section>
   );
 }
