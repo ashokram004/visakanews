@@ -90,6 +90,12 @@ export default async function HomePage() {
         <HeroSlider articles={heroArticles} />
       )}
 
+      {/* ================= SMALL ADS ================= */}
+      <section className="home-ads small-ads">
+        <div className="ad-box small">Advertisement</div>
+        <div className="ad-box small">Advertisement</div>
+      </section>
+
       {/* ================= LATEST NEWS ================= */}
       {latestArticles.length > 0 && (
         <section className="article-latest-news">
@@ -124,12 +130,6 @@ export default async function HomePage() {
           </div>
         </section>
       )}
-
-      {/* ================= SMALL ADS ================= */}
-      <section className="home-ads small-ads">
-        <div className="ad-box small">Advertisement</div>
-        <div className="ad-box small">Advertisement</div>
-      </section>
 
       {/* ================= SOCIAL MEDIA ROW ================= */}
       <section className="social-media-row">

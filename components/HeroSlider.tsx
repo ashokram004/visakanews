@@ -29,6 +29,15 @@ function getImageUrl(url?: string) {
     : STRAPI_URL + url;
 }
 
+function truncateTitle(title: string, maxLength: number = 50): string {
+  if (title.length <= maxLength) return title;
+  const lastSpaceIndex = title.lastIndexOf(' ', maxLength);
+  if (lastSpaceIndex > 0) {
+    return title.substring(0, lastSpaceIndex) + '...';
+  }
+  return title.substring(0, maxLength) + '...';
+}
+
 /* -------------------- Component -------------------- */
 
 const HeroSlider = ({ articles }: Props) => {
@@ -84,7 +93,7 @@ const HeroSlider = ({ articles }: Props) => {
             }}
           >
             <div className="hero-content">
-              <h2>{a.title}</h2>
+              <h2>{truncateTitle(a.title)}</h2>
             </div>
           </Link>
         ))}
