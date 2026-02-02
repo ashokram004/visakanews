@@ -679,9 +679,28 @@ body {
   margin: 0;
   line-height: 1.2;
   border-bottom: 2px solid var(--border-strong);
-  padding-bottom: 6px;
+  padding-bottom: 0px;
   font-size: 18px;
   color: var(--text-strong);
+  background: linear-gradient(90deg, var(--color-accent), var(--color-link));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: bold;
+}
+
+.section-title-home {
+  margin: 0;
+  line-height: 1.2;
+  border-bottom: 2px solid var(--border-strong);
+  padding-bottom: 6px;
+  font-size: 18px;
+  color: black;
+  background: black;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: bold;
 }
 
 .section-view-all {
@@ -865,13 +884,14 @@ body {
 .article-meta {
   font-size: 14px;
   color: var(--text-secondary);
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 }
 
 .article-cover {
   width: 100%;
   max-height: 320px;
   margin: 20px 0;
+  margin-bottom: 0px;
   object-fit: fill;
 }
 
@@ -913,6 +933,11 @@ body {
   max-width: 100%;
   width: 100%;
   display: block;
+}
+
+.article-content img {
+  max-height: 260px;
+  object-fit: cover;
 }
 
 .article-ad {
@@ -1036,8 +1061,14 @@ body {
 
 .page-title {
   font-size: 28px;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
+  margin-top: 0px;
   color: var(--text-strong);
+  background: linear-gradient(90deg, var(--color-accent), var(--color-link));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: bold;
 }
 
 .news-list-page {
@@ -1083,7 +1114,7 @@ body {
 
   .page-title {
     font-size: 20px;
-    margin-bottom: 0px;
+    margin-bottom: -10px;
     color: var(--text-strong);
   }
   
@@ -1105,6 +1136,11 @@ body {
   margin: 0 auto;
 }
 
+.videos-page .page-title {
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
 .video-list {
   display: flex;
   flex-direction: column;
@@ -1119,7 +1155,7 @@ body {
 .video-title {
   font-size: 22px;
   line-height: 1.3;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   color: var(--text-strong);
 }
 
@@ -1240,6 +1276,23 @@ body {
   color: var(--color-link);
   margin-top: 4px;
   text-decoration: none;
+}
+
+
+.profile-content .profile-home {
+  margin-top: -10px;
+}
+
+.profile-content .news-list-page {
+  margin-top: -20px;
+}
+
+.profile-content .profile-list {
+  margin-top: -15px;
+}
+
+.profile-content .profile-video {
+  margin-top: -10px;
 }
 
 .profile-read-more:hover {
@@ -1387,21 +1440,29 @@ body {
   display: flex;
   gap: 10px;
   align-self: flex-end;
+  margin-top: 10px;
 }
 
 .profile-tabs a {
-  background: none;
-  border: none;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
   font-weight: 600;
   cursor: pointer;
-  padding-bottom: 6px;
-  border-bottom: 3px solid transparent;
+  padding: 8px 16px;
+  border-radius: 6px;
   color: var(--text-secondary);
   text-decoration: none;
+  transition: all 0.2s ease;
 }
 
 .profile-tabs a.active {
-  border-bottom-color: var(--text-strong);
+  background: var(--color-accent);
+  color: var(--text-inverse);
+  border-color: var(--color-accent);
+}
+
+.profile-tabs a:hover {
+  background: var(--bg-tertiary);
   color: var(--text-primary);
 }
 
@@ -1417,11 +1478,15 @@ body {
   border-bottom: 1px solid var(--border-light);
 }
 
+profile-list {
+  margin-bottom: -10px;
+}
+
 .profile-video iframe {
   width: 100%;
   height: 420px;
   border: none;
-  margin-top: 10px;
+  margin-top: -10px;
 }
 
 @media (max-width: 768px) {

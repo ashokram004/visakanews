@@ -99,7 +99,7 @@ export default async function HomePage() {
       {/* ================= LATEST NEWS ================= */}
       {latestArticles.length > 0 && (
         <section className="article-latest-news">
-          <h2 className="section-title">Latest News</h2>
+          <h2 className="section-title-home">Latest News</h2>
           <div className="latest-news-list">
             {latestArticles.map((newsItem: Article) => (
               <Link

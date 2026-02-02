@@ -123,7 +123,6 @@ function renderContent(blocks: ContentBlock[]) {
                 marginTop: "6px",
               }}
             >
-              {block.image.alternativeText}
             </figcaption>
           )}
         </figure>
