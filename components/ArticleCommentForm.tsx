@@ -88,7 +88,7 @@ export default function ArticleCommentForm({ articleId, onCommentAdded }: Props)
 
   return (
     <form className="comment-form" onSubmit={handleSubmit}>
-      <h3>Leave a comment</h3>
+      <h3 className="comment-form-title">Leave a comment</h3>
 
       <input
         placeholder="Your name"

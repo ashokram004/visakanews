@@ -106,8 +106,11 @@ function renderContent(blocks: ContentBlock[]) {
             alt={block.image.alternativeText || ""}
             style={{
               maxWidth: "100%",
+              width: "100%",
+              height: "420px",
               display: "block",
               margin: "0 auto",
+              objectFit: "fill",
             }}
           />
 
@@ -195,6 +198,22 @@ export default async function ArticleDetailPage({ params }: any) {
       {/* INLINE AD */}
       <div className="article-ad">Advertisement</div>
 
+      {/* GALLERY / VIDEOS (KEPT) */}
+      {article.videos && article.videos.length > 0 && (
+        <section className="article-videos">
+          {article.videos.map((v) => (
+            <iframe
+              key={v.id}
+              src={toEmbedUrl(v.embedUrl)}
+              title={v.title}
+              width="100%"
+              height="400"
+              allowFullScreen
+            />
+          ))}
+        </section>
+      )}
+
       {/* LATEST NEWS SECTION */}
       <section className="article-latest-news">
         <h2 className="section-title">Latest News</h2>
@@ -233,22 +252,6 @@ export default async function ArticleDetailPage({ params }: any) {
           <p>No latest news available.</p>
         )}
       </section>
-
-      {/* GALLERY / VIDEOS (KEPT) */}
-      {article.videos && article.videos.length > 0 && (
-        <section className="article-videos">
-          {article.videos.map((v) => (
-            <iframe
-              key={v.id}
-              src={toEmbedUrl(v.embedUrl)}
-              title={v.title}
-              width="100%"
-              height="400"
-              allowFullScreen
-            />
-          ))}
-        </section>
-      )}
 
       {/* COMMENTS (BOTTOM) */}
       <ArticleCommentsSection initialComments={commentsRes.data || []} articleId={article.id} />
