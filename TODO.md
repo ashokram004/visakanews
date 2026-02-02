@@ -1,7 +1,4 @@
-# TODO: Add Next 5 News After Hero Slider on Home Page
+# TODO for Adding More Social Media Sharing Options
 
-## Tasks
-- [x] Add `const latestArticles = homeArticles.slice(3, 8);` after `heroArticles` in `app/page.tsx`
-- [x] Insert the "Latest News" section in JSX after the HeroSlider component in `app/page.tsx`
-- [ ] Test the home page to ensure the new section renders correctly and the "More" button links to `/news`
-- [ ] Verify that the displayed articles are the next 5 after the hero's top 3
+- [x] Update imports in components/ArticleShare.tsx to include icons for Gmail, LinkedIn, Pinterest, Reddit, and Telegram
+- [x] Add new share buttons for Gmail, LinkedIn, Pinterest, Reddit, and Telegram in the share-icons div

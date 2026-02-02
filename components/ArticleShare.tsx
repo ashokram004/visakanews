@@ -6,7 +6,12 @@ import {
   FaXTwitter ,
   FaFacebookF,
   FaLink,
-  FaShare
+  FaShare,
+  FaEnvelope,
+  FaLinkedinIn,
+  FaPinterestP,
+  FaRedditAlien,
+  FaTelegram
 } from "react-icons/fa6";
 
 type Props = {
@@ -54,6 +59,51 @@ export default function ArticleShare({ url }: Props) {
             className="share-btn facebook"
           >
             <FaFacebookF />
+          </a>
+
+          <a
+            href={`mailto:?subject=Check this out&body=${encodeURIComponent(url)}`}
+            target="_blank"
+            aria-label="Email"
+            className="share-btn email"
+          >
+            <FaEnvelope />
+          </a>
+
+          <a
+            href={`https://www.linkedin.com/sharing/share-offsite/?url=${url}`}
+            target="_blank"
+            aria-label="LinkedIn"
+            className="share-btn linkedin"
+          >
+            <FaLinkedinIn />
+          </a>
+
+          <a
+            href={`https://pinterest.com/pin/create/button/?url=${url}`}
+            target="_blank"
+            aria-label="Pinterest"
+            className="share-btn pinterest"
+          >
+            <FaPinterestP />
+          </a>
+
+          <a
+            href={`https://reddit.com/submit?url=${url}`}
+            target="_blank"
+            aria-label="Reddit"
+            className="share-btn reddit"
+          >
+            <FaRedditAlien />
+          </a>
+
+          <a
+            href={`https://t.me/share/url?url=${url}`}
+            target="_blank"
+            aria-label="Telegram"
+            className="share-btn telegram"
+          >
+            <FaTelegram />
           </a>
 
           <button
