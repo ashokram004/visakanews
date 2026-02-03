@@ -1,11 +1,22 @@
 import { fetchFromStrapi } from "../../../../lib/strapi";
 
+const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL;
+
 /* -------------------- Types -------------------- */
+
+type ContentBlock = {
+  type: string;
+  children?: any[];
+  image?: {
+    url: string;
+    alternativeText?: string;
+  };
+};
 
 type Achievement = {
   id: number;
   title: string;
-  description?: any;
+  description?: ContentBlock[];
   year?: number;
   publishedAt: string;
 };
@@ -16,11 +27,87 @@ type Props = {
 
 /* -------------------- Helpers -------------------- */
 
-function richTextToPlainText(blocks: any[]): string {
-  if (!Array.isArray(blocks)) return "";
-  return blocks
-    .map((b) => b.children?.map((c: any) => c.text).join(""))
-    .join("\n");
+function getImageUrl(url?: string) {
+  if (!url) return null;
+  return url.startsWith("http")
+    ? url
+    : STRAPI_URL + url;
+}
+
+function renderContent(blocks: ContentBlock[]) {
+  return blocks.map((block, index) => {
+    /* ---------- PARAGRAPH ---------- */
+    if (block.type === "paragraph" && block.children) {
+      const firstLink = block.children.find(
+        (c: any) => c.type === "link" && c.url
+      );
+
+      // 👉 ONE embed per paragraph
+      if (firstLink) {
+        return (
+          <div key={index} style={{ margin: "24px 0" }}>
+            <iframe
+              src={firstLink.url}
+              width="100%"
+              height="400"
+              allowFullScreen
+            />
+          </div>
+        );
+      }
+
+      return (
+        <p key={index}>
+          {block.children && block.children.length > 0 ? block.children.map((c: any, i: number) => {
+            if (!c.text) return null;
+
+            return (
+              <span key={i}>
+                {c.text}
+                {" "}
+              </span>
+            );
+          }) : <br />}
+        </p>
+      );
+    }
+
+    /* ---------- IMAGE ---------- */
+    if (block.type === "image" && block.image?.url) {
+      const imageUrl = getImageUrl(block.image.url);
+
+      return (
+        <figure key={index} style={{ margin: "24px 0" }}>
+          <img
+            src={imageUrl || ""}
+            alt={block.image.alternativeText || ""}
+            style={{
+              maxWidth: "100%",
+              width: "100%",
+              height: "420px",
+              display: "block",
+              margin: "0 auto",
+              objectFit: "fill",
+            }}
+          />
+
+          {block.image.alternativeText && (
+            <figcaption
+              style={{
+                textAlign: "center",
+                fontSize: "14px",
+                color: "#666",
+                marginTop: "6px",
+              }}
+            >
+            </figcaption>
+          )}
+        </figure>
+      );
+    }
+
+    return null;
+  });
 }
 
 export default async function ProfileAchievementsPage({ params }: Props) {
@@ -61,7 +148,7 @@ export default async function ProfileAchievementsPage({ params }: Props) {
               {a.year && ` (${a.year})`}
             </strong>
             {a.description && (
-              <p>{richTextToPlainText(a.description)}</p>
+              <div>{renderContent(a.description)}</div>
             )}
           </li>
         ))}

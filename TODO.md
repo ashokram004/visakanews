@@ -1,11 +1,9 @@
-# Flash News Sorting Implementation
+# TODO: Update Achievements and Activities Pages for Image Rendering
 
-- [x] Update FlashItem type in app/page.tsx to include order?: number and publishedAt: string
-- [x] Modify Strapi fetch query to remove &sort=order:asc
-- [x] Add sorting logic in app/page.tsx: sort items with order by order value, then items without order by publishedAt descending
-
-# Profile Achievements Sorting Implementation
-
-- [x] Update Achievement type in app/profiles/[slug]/achievements/page.tsx to include order?: number
-- [x] Modify Strapi fetch query to remove &sort=order:asc
-- [x] Add sorting logic: sort items with order by order value, then items without order by year descending
+## Tasks
+- [x] Update `app/profiles/[slug]/achievements/page.tsx`:
+  - Add `STRAPI_URL`, `getImageUrl`, and `renderContent` functions.
+  - Replace plain text rendering of `a.description` with `renderContent(a.description)` in a `<div>`.
+- [x] Update `app/profiles/[slug]/activities/page.tsx`:
+  - Add `STRAPI_URL`, `getImageUrl`, and `renderContent` functions.
+  - Replace plain text rendering of `a.description` with `renderContent(a.description)` in a `<div>`.

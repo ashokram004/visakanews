@@ -171,13 +171,8 @@ export default async function ArticleDetailPage({ params }: any) {
   }
   const allLatest = latestRes.data || [];
 
-  // Exclude current article if it's in the latest 5, otherwise take first 5
-  let latestArticles = allLatest.filter((a: Article) => a.id !== article.id);
-  if (latestArticles.length < 5) {
-    latestArticles = allLatest.slice(0, 5);
-  } else {
-    latestArticles = latestArticles.slice(0, 5);
-  }
+  // Exclude current article and take the top 5 latest
+  let latestArticles = allLatest.filter((a: Article) => a.id !== article.id).slice(0, 5);
 
   return (
     <article className="article-page">
