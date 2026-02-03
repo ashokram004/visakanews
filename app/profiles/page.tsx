@@ -52,7 +52,7 @@ export default async function ProfilesPage() {
                 <span
                   className="profile-badge"
                 >
-                  {profile.profileType}
+                  {profile.profileType ? profile.profileType.toUpperCase() : ""}
                 </span>
                 <div className="profile-read-more">read more...</div>
               </div>

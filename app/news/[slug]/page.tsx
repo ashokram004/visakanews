@@ -42,6 +42,7 @@ type Article = {
   content: ContentBlock[];
   publishedAt: string;
   primaryCategory?: string;
+  dynamicTabs?: { slug: string }[];
   coverImage?: {
     url: string;
     alternativeText?: string;
@@ -144,7 +145,7 @@ export default async function ArticleDetailPage({ params }: any) {
   const { slug } = await params;
 
   const res = await fetchFromStrapi(
-    `/articles?filters[slug][$eq]=${slug}&populate[coverImage]=true&populate[videos]=true&populate[author]=true`
+    `/articles?filters[slug][$eq]=${slug}&populate[coverImage]=true&populate[videos]=true&populate[author]=true&populate[dynamicTabs]=true`
   );
 
   const article: Article = res.data?.[0];
@@ -156,10 +157,18 @@ export default async function ArticleDetailPage({ params }: any) {
 
   const articleUrl = `https://visakanews.com/news/${article.slug}`;
 
-  // Fetch latest 6 articles to account for potential exclusion of current article
-  const latestRes = await fetchFromStrapi(
-    "/articles?sort=publishedAt:desc&pagination[pageSize]=6&populate=coverImage"
-  );
+  // Fetch latest articles based on the dynamicTabs of the current article
+  const dynamicTab = article.dynamicTabs?.[0];
+  let latestRes;
+  if (dynamicTab) {
+    latestRes = await fetchFromStrapi(
+      `/articles?sort=publishedAt:desc&pagination[pageSize]=6&populate=coverImage&filters[dynamicTabs][slug][$eq]=${dynamicTab.slug}`
+    );
+  } else {
+    latestRes = await fetchFromStrapi(
+      "/articles?sort=publishedAt:desc&pagination[pageSize]=6&populate=coverImage&filters[dynamicTabs][$null]=true"
+    );
+  }
   const allLatest = latestRes.data || [];
 
   // Exclude current article if it's in the latest 5, otherwise take first 5

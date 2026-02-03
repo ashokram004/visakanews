@@ -42,7 +42,7 @@ export default function ProfileTabs({ profile, children }: Props) {
   const params = useParams();
   const slug = params.slug as string;
 
-  const tabs = ["home", "achievements", "videos", "news"];
+  const tabs = ["home", "achievements", "activities", "videos"];
   const activeTab = pathname === `/profiles/${slug}` ? "home" : tabs.find(tab => pathname.endsWith(`/${tab}`)) || null;
 
   return (
@@ -69,7 +69,7 @@ export default function ProfileTabs({ profile, children }: Props) {
 
           <div>
             <h1 className="profile-name">{profile.name}</h1>
-            <span className="profile-type">{profile.profileType}</span>
+            <span className="profile-type">{profile.profileType ? profile.profileType.toUpperCase() : ""}</span>
           </div>
         </div>
 
@@ -81,7 +81,7 @@ export default function ProfileTabs({ profile, children }: Props) {
               href={tab === "home" ? `/profiles/${slug}` : `/profiles/${slug}/${tab}`}
               className={activeTab === tab ? "active" : ""}
             >
-              {tab != "news" ? (tab.charAt(0).toUpperCase() + tab.slice(1)) : "Activites"}
+              {tab.charAt(0).toUpperCase() + tab.slice(1)}
             </Link>
           ))}
         </nav>

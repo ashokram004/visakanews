@@ -85,7 +85,7 @@ export default async function HomePage() {
 
   /* -------------------- Articles -------------------- */
   const articleRes = await fetchFromStrapi(
-    "/articles?sort=publishedAt:desc&pagination[pageSize]=20&populate=coverImage"
+    "/articles?sort=publishedAt:desc&pagination[pageSize]=20&populate=coverImage&filters[dynamicTabs][$null]=true"
   );
 
   const allArticles: Article[] = articleRes.data;

@@ -16,7 +16,7 @@ type Article = {
 
 export default async function NewsPage() {
   const res = await fetchFromStrapi(
-    "/articles?sort=publishedAt:desc&populate=coverImage&pagination[pageSize]=20"
+    "/articles?sort=publishedAt:desc&populate=coverImage&pagination[pageSize]=20&filters[dynamicTabs][$null]=true"
   );
 
   const articles: Article[] = res.data;

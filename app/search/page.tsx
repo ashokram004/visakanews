@@ -58,7 +58,7 @@ export default async function SearchPage({
 
   const [articlesRes, profilesRes] = await Promise.all([
     fetchFromStrapi(
-      `/articles?filters[title][$containsi]=${query}&populate=coverImage&sort=publishedAt:desc`
+      `/articles?filters[title][$containsi]=${query}&populate=coverImage&sort=publishedAt:desc&filters[dynamicTabs][$null]=true`
     ),
     fetchFromStrapi(
       `/profiles?filters[$or][0][name][$containsi]=${query}&filters[$or][1][shortBio][$containsi]=${query}&populate=profileImage`
@@ -121,7 +121,7 @@ export default async function SearchPage({
                   )}
                   <div className="news-text">
                     <span className="news-title">{p.name}</span>
-                    <span className="news-date">{p.profileType}</span>
+                    <span className="news-date">{p.profileType ? p.profileType.toUpperCase() : ""}</span>
                   </div>
                 </Link>
               </li>
