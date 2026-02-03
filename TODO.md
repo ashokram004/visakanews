@@ -1,4 +1,5 @@
-# TODO for Adding More Social Media Sharing Options
+# Flash News Sorting Implementation
 
-- [x] Update imports in components/ArticleShare.tsx to include icons for Gmail, LinkedIn, Pinterest, Reddit, and Telegram
-- [x] Add new share buttons for Gmail, LinkedIn, Pinterest, Reddit, and Telegram in the share-icons div
+- [x] Update FlashItem type in app/page.tsx to include order?: number and publishedAt: string
+- [x] Modify Strapi fetch query to remove &sort=order:asc
+- [x] Add sorting logic in app/page.tsx: sort items with order by order value, then items without order by publishedAt descending

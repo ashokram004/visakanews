@@ -21,6 +21,11 @@ const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL;
 type FlashItem = {
   id: number;
   headline: string;
+  order?: number;
+  publishedAt: string;
+  article?: {
+    slug: string;
+  };
 };
 
 type Article = {
@@ -65,9 +70,18 @@ export default async function HomePage() {
 
   /* -------------------- Flash News -------------------- */
   const flashRes = await fetchFromStrapi(
-    "/flash-news?filters[isActive][$eq]=true&sort=order:asc&populate=article"
+    "/flash-news?filters[isActive][$eq]=true&populate=article"
   );
-  const flashItems: FlashItem[] = flashRes.data;
+  const flashItems: FlashItem[] = flashRes.data.sort((a: FlashItem, b: FlashItem) => {
+    // Items with order come first, sorted by order ascending
+    if (a.order != null && b.order != null) {
+      return a.order - b.order;
+    }
+    if (a.order !== undefined) return -1;
+    if (b.order !== undefined) return 1;
+    // Items without order, sorted by publishedAt descending (latest first)
+    return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+  });
 
   /* -------------------- Articles -------------------- */
   const articleRes = await fetchFromStrapi(
