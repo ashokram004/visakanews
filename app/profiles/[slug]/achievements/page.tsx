@@ -7,6 +7,7 @@ type Achievement = {
   title: string;
   description?: any;
   year?: number;
+  publishedAt: string;
 };
 
 type Props = {
@@ -36,10 +37,19 @@ export default async function ProfileAchievementsPage({ params }: Props) {
   }
 
   const achievementsRes = await fetchFromStrapi(
-    `/profile-achievements?filters[profile][id][$eq]=${profile.id}&sort=order:asc`
+    `/profile-achievements?filters[profile][id][$eq]=${profile.id}`
   );
 
-  const achievements: Achievement[] = achievementsRes.data || [];
+  const achievements: Achievement[] = achievementsRes.data.sort((a: Achievement, b: Achievement) => {
+    // Items with year come first, sorted by year descending
+    if (a.year != null && b.year != null) {
+      return b.year - a.year;
+    }
+    if (a.year != null) return -1;
+    if (b.year != null) return 1;
+    // Items without year, sorted by publishedAt descending (latest first)
+    return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+  }) || [];
 
   return (
     <section>
