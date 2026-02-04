@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
       const endpoint = type === 'article' ? `/articles/${documentId}` : `/profiles/${documentId}`
       await updateFromStrapi(endpoint, { data: { views: currentViews + 1 } })
       viewedIds.push(id)
-      cookieStore.set(cookieName, JSON.stringify(viewedIds), { maxAge: 60 * 60 * 24 * 30 }) // 30 days
+      cookieStore.set(cookieName, JSON.stringify(viewedIds)) // Session cookie
     }
 
     return NextResponse.json({ success: true })
