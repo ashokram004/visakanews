@@ -1,8 +1,6 @@
 export async function trackPageView(data: {
   pageUrl: string;
   pageType: string;
-  articleId?: number;
-  profileId?: number;
 }) {
   try {
     const sessionId =
@@ -18,7 +16,7 @@ export async function trackPageView(data: {
         ? "tablet"
         : "desktop";
 
-    await fetch(
+    const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/analytics`,
       {
         method: "POST",
@@ -29,17 +27,20 @@ export async function trackPageView(data: {
           data: {
             pageUrl: data.pageUrl,
             pageType: data.pageType,
-            article: data.articleId ? { id: data.articleId } : null,
-            profile: data.profileId ? { id: data.profileId } : null,
             sessionId,
             device,
             referrer: document.referrer || "direct",
             userAgent: navigator.userAgent,
-            timestamp: new Date().toISOString(),
+            timeStamp: new Date().toISOString(),
           },
         }),
       }
     );
+
+    if (!response.ok) {
+      const error = await response.json();
+      console.error("Analytics error response:", error);
+    }
   } catch (err) {
     console.error("Analytics error", err);
   }

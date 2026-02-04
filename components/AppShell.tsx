@@ -20,23 +20,25 @@ export default function AppShell({ children }: Props) {
     let pageType = 'other';
     if (pathname === '/') {
       pageType = 'home';
+    } else if (pathname.startsWith('/news')) {
+      pageType = 'news';
     } else if (pathname.startsWith('/news/')) {
       pageType = 'article';
+    } else if (pathname.startsWith('/profiles')) {
+      pageType = 'profiles';
     } else if (pathname.startsWith('/profiles/')) {
       pageType = 'profile';
-    } else if (pathname.startsWith('/videos/')) {
+    } else if (pathname.startsWith('/videos')) {
       pageType = 'videos';
-    } else if (pathname.startsWith('/search/')) {
+    } else if (pathname.startsWith('/search')) {
       pageType = 'search';
     } else if (pathname.startsWith('/topics/')) {
-      pageType = 'topics';
+      pageType = 'dynamicTabs';
     }
 
     trackPageView({
       pageUrl: window.location.href,
-      pageType,
-      articleId: undefined,
-      profileId: undefined,
+      pageType
     });
   }, [pathname]);
 

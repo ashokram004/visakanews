@@ -3,7 +3,7 @@ import { toEmbedUrl } from "@/lib/video";
 import { fetchFromStrapi } from "../../../lib/strapi";
 import ArticleShare from "@/components/ArticleShare";
 import ArticleCommentsSection from "@/components/ArticleCommentsSection";
-import AnalyticsTracker from "@/components/AnalyticsTracker";
+import ViewIncrementor from "@/components/ViewIncrementor";
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -38,6 +38,7 @@ type Comment = {
 
 type Article = {
   id: number;
+  documentId: string;
   title: string;
   slug: string;
   content: ContentBlock[];
@@ -50,6 +51,7 @@ type Article = {
   };
   author?: Author;
   videos?: Video[];
+  views?: number;
 };
 
 function getImageUrl(url?: string) {
@@ -177,7 +179,7 @@ export default async function ArticleDetailPage({ params }: any) {
 
   return (
     <>
-      <AnalyticsTracker pageType="article" articleId={article.id} />
+      <ViewIncrementor id={article.id} documentId={article.documentId} currentViews={article.views || 0} type="article" />
       <article className="article-page">
         {article.primaryCategory && (
           <div className="article-category">{article.primaryCategory}</div>

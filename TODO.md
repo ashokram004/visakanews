@@ -1,6 +1,6 @@
-# Analytics Integration TODO
-
-- [x] Edit components/AppShell.tsx: Import trackPageView, add useEffect for basic page view tracking on pathname changes, determine pageType, set articleId and profileId to undefined.
-- [x] Edit app/news/[slug]/page.tsx: Add trackPageView call after fetching article data with actual articleId.
-- [x] Edit app/profiles/[slug]/page.tsx: Add trackPageView call after fetching profile data with actual profileId.
-- [x] Test the site to ensure analytics are sent correctly (check console and network tab).
+- [x] Add updateFromStrapi function in lib/strapi.tsx for PUT requests
+- [x] Create app/api/increment-view/route.ts API route for view increment and cookie handling
+- [x] Create components/ViewIncrementor.tsx client component to trigger view increment on client-side
+- [x] Edit app/news/[slug]/page.tsx to use ViewIncrementor component (using documentId)
+- [x] Edit app/profiles/[slug]/page.tsx to use ViewIncrementor component (using documentId)
+- [x] Add documentId to Profile type in app/profiles/[slug]/page.tsx

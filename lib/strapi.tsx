@@ -25,3 +25,29 @@ export async function fetchFromStrapi(
 
   return res.json();
 }
+
+export async function updateFromStrapi(
+  path: string,
+  data: any,
+  options: RequestInit = {}
+) {
+  const url = `${STRAPI_URL}${path}`;
+
+  const res = await fetch(url, {
+    method: "PUT",
+    body: JSON.stringify(data),
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...(options.headers || {}),
+    },
+  });
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error(`Failed to update ${path}: ${res.status} ${res.statusText}`, errorText);
+    throw new Error(`Failed to update ${path}: ${res.status} ${res.statusText}`);
+  }
+
+  return res.json();
+}

@@ -1,5 +1,7 @@
 import { fetchFromStrapi } from "../../../lib/strapi";
 import { toEmbedUrl } from "../../../lib/video";
+import { incrementView } from "../../../lib/actions";
+import ViewIncrementor from "@/components/ViewIncrementor";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -12,6 +14,24 @@ type ContentBlock = {
     url: string;
     alternativeText?: string;
   };
+};
+
+type Profile = {
+  id: number;
+  documentId: string;
+  slug: string;
+  shortBio?: string;
+  homeVideo?: string;
+  detailedBio?: ContentBlock[];
+  coverImage?: {
+    url: string;
+    alternativeText?: string;
+  };
+  profileImage?: {
+    url: string;
+    alternativeText?: string;
+  };
+  views?: number;
 };
 
 /* -------------------- Helpers -------------------- */
@@ -67,7 +87,9 @@ export default async function ProfileHomePage({ params }: Props) {
   }
 
   return (
-    <section className="profile-home">
+    <>
+      <ViewIncrementor id={profile.id} documentId={profile.documentId} currentViews={profile.views || 0} type="profile" />
+      <section className="profile-home">
       {profile.shortBio && <p>{profile.shortBio}</p>}
       {profile.homeVideo && (
         <div className="profile-home-video">
@@ -87,5 +109,6 @@ export default async function ProfileHomePage({ params }: Props) {
         </div>
       )}
     </section>
+    </>
   );
 }
