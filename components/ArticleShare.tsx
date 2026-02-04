@@ -16,10 +16,24 @@ import {
 
 type Props = {
   url: string;
+  documentId: string;
+  currentShares: number;
 };
 
-export default function ArticleShare({ url }: Props) {
-  const [showIcons, setShowIcons] = useState(false);
+export default function ArticleShare({ url, documentId, currentShares }: Props) {
+  const [showIcons, setShowIcons] = useState(false); 
+
+  const handleShare = () => { 
+    fetch('/api/increment-share', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        documentId,
+        currentShares,
+        type: 'article'
+      })
+    }).catch(error => console.error('Failed to increment shares:', error))
+  }
 
   return (
     <div className="article-share">
@@ -39,6 +53,10 @@ export default function ArticleShare({ url }: Props) {
             target="_blank"
             aria-label="WhatsApp"
             className="share-btn whatsapp"
+            onClick={(e) => {
+              handleShare();
+              // Allow the link to open
+            }}
           >
             <FaWhatsapp />
           </a>
@@ -48,6 +66,10 @@ export default function ArticleShare({ url }: Props) {
             target="_blank"
             aria-label="X"
             className="share-btn twitter"
+            onClick={(e) => {
+              handleShare();
+              // Allow the link to open
+            }}
           >
             <FaXTwitter />
           </a>
@@ -57,6 +79,10 @@ export default function ArticleShare({ url }: Props) {
             target="_blank"
             aria-label="Facebook"
             className="share-btn facebook"
+            onClick={(e) => {
+              handleShare();
+              // Allow the link to open
+            }}
           >
             <FaFacebookF />
           </a>
@@ -66,6 +92,10 @@ export default function ArticleShare({ url }: Props) {
             target="_blank"
             aria-label="Email"
             className="share-btn email"
+            onClick={(e) => {
+              handleShare();
+              // Allow the link to open
+            }}
           >
             <FaEnvelope />
           </a>
@@ -75,6 +105,10 @@ export default function ArticleShare({ url }: Props) {
             target="_blank"
             aria-label="LinkedIn"
             className="share-btn linkedin"
+            onClick={(e) => {
+              handleShare();
+              // Allow the link to open
+            }}
           >
             <FaLinkedinIn />
           </a>
@@ -84,6 +118,10 @@ export default function ArticleShare({ url }: Props) {
             target="_blank"
             aria-label="Pinterest"
             className="share-btn pinterest"
+            onClick={(e) => {
+              handleShare();
+              // Allow the link to open
+            }}
           >
             <FaPinterestP />
           </a>
@@ -93,6 +131,10 @@ export default function ArticleShare({ url }: Props) {
             target="_blank"
             aria-label="Reddit"
             className="share-btn reddit"
+            onClick={(e) => {
+              handleShare();
+              // Allow the link to open
+            }}
           >
             <FaRedditAlien />
           </a>
@@ -102,6 +144,10 @@ export default function ArticleShare({ url }: Props) {
             target="_blank"
             aria-label="Telegram"
             className="share-btn telegram"
+            onClick={(e) => {
+              handleShare();
+              // Allow the link to open
+            }}
           >
             <FaTelegram />
           </a>
@@ -112,6 +158,7 @@ export default function ArticleShare({ url }: Props) {
             onClick={() => {
               navigator.clipboard.writeText(url);
               alert("Link copied!");
+              handleShare();
             }}
           >
             <FaLink />

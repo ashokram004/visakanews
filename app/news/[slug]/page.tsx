@@ -52,6 +52,7 @@ type Article = {
   author?: Author;
   videos?: Video[];
   views?: number;
+  shares?: number;
 };
 
 function getImageUrl(url?: string) {
@@ -190,6 +191,8 @@ export default async function ArticleDetailPage({ params }: any) {
       <div className="article-meta">
         {article.author?.name && <span>By {article.author.name} • </span>}
         {new Date(article.publishedAt).toLocaleDateString()}
+        <span className="article-views"> • 👁 {article.views || 0} views</span>
+        <span className="article-shares"> • 🔗 {article.shares || 0} shares</span>
       </div>
 
       {article.coverImage && (
@@ -204,9 +207,9 @@ export default async function ArticleDetailPage({ params }: any) {
       <div className="article-content">
         {renderContent(article.content)}
       </div>
-
+ 
       {/* SHARE ICONS */}
-      <ArticleShare url={articleUrl} />
+      <ArticleShare url={articleUrl} documentId={article.documentId} currentShares={article.shares || 0} />
 
       {/* INLINE AD */}
       <div className="article-ad">Advertisement</div>
