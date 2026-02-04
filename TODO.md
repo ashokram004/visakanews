@@ -1,9 +1,6 @@
-# TODO: Update Achievements and Activities Pages for Image Rendering
+# Analytics Integration TODO
 
-## Tasks
-- [x] Update `app/profiles/[slug]/achievements/page.tsx`:
-  - Add `STRAPI_URL`, `getImageUrl`, and `renderContent` functions.
-  - Replace plain text rendering of `a.description` with `renderContent(a.description)` in a `<div>`.
-- [x] Update `app/profiles/[slug]/activities/page.tsx`:
-  - Add `STRAPI_URL`, `getImageUrl`, and `renderContent` functions.
-  - Replace plain text rendering of `a.description` with `renderContent(a.description)` in a `<div>`.
+- [x] Edit components/AppShell.tsx: Import trackPageView, add useEffect for basic page view tracking on pathname changes, determine pageType, set articleId and profileId to undefined.
+- [x] Edit app/news/[slug]/page.tsx: Add trackPageView call after fetching article data with actual articleId.
+- [x] Edit app/profiles/[slug]/page.tsx: Add trackPageView call after fetching profile data with actual profileId.
+- [x] Test the site to ensure analytics are sent correctly (check console and network tab).

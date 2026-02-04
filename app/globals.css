@@ -1063,7 +1063,7 @@ body {
   margin: 0 auto;
 }
 
-.page-title {
+.page-title, .page-title-search {
   font-size: 28px;
   margin-bottom: 0px;
   margin-top: 0px;
@@ -1074,6 +1074,7 @@ body {
   background-clip: text;
   font-weight: bold;
 }
+
 
 .news-list-page {
   list-style: none;
@@ -1119,6 +1120,12 @@ body {
   .page-title {
     font-size: 20px;
     margin-bottom: -10px;
+    color: var(--text-strong);
+  }
+
+  page-title-search {
+    font-size: 20px;
+    margin-bottom: 0px;
     color: var(--text-strong);
   }
   
@@ -1441,6 +1448,7 @@ body {
 .profile-type {
   display: inline-block;
   margin-top: 6px;
+  margin-right: 4px;
   font-size: 12px;
   font-weight: 700;
   padding: 4px 8px;

@@ -3,6 +3,7 @@ import { toEmbedUrl } from "@/lib/video";
 import { fetchFromStrapi } from "../../../lib/strapi";
 import ArticleShare from "@/components/ArticleShare";
 import ArticleCommentsSection from "@/components/ArticleCommentsSection";
+import AnalyticsTracker from "@/components/AnalyticsTracker";
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -175,10 +176,12 @@ export default async function ArticleDetailPage({ params }: any) {
   let latestArticles = allLatest.filter((a: Article) => a.id !== article.id).slice(0, 5);
 
   return (
-    <article className="article-page">
-      {article.primaryCategory && (
-        <div className="article-category">{article.primaryCategory}</div>
-      )}
+    <>
+      <AnalyticsTracker pageType="article" articleId={article.id} />
+      <article className="article-page">
+        {article.primaryCategory && (
+          <div className="article-category">{article.primaryCategory}</div>
+        )}
 
       <h1 className="article-title">{article.title}</h1>
 
@@ -265,5 +268,6 @@ export default async function ArticleDetailPage({ params }: any) {
       <ArticleCommentsSection initialComments={commentsRes.data || []} articleId={article.id} />
 
     </article>
+    </>
   );
 }
