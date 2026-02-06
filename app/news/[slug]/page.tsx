@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { toEmbedUrl } from "@/lib/video";
-import { fetchFromStrapi } from "../../../lib/strapi";
+import { fetchFromStrapi, fetchAdvertisements } from "../../../lib/strapi";
 import ArticleShare from "@/components/ArticleShare";
 import ArticleCommentsSection from "@/components/ArticleCommentsSection";
 import ViewIncrementor from "@/components/ViewIncrementor";
+import Advertisement from "@/components/Advertisement";
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -34,6 +35,17 @@ type Comment = {
   name: string;
   message: string;
   createdAt: string;
+};
+
+type Ad = {
+  id: number;
+  title: string;
+  image: {
+    url: string;
+    alternativeText?: string;
+  };
+  link?: string;
+  position: string;
 };
 
 type Article = {
@@ -178,6 +190,12 @@ export default async function ArticleDetailPage({ params }: any) {
   // Exclude current article and take the top 5 latest
   let latestArticles = allLatest.filter((a: Article) => a.id !== article.id).slice(0, 5);
 
+  /* -------------------- Advertisements -------------------- */
+  const adsRes = await fetchAdvertisements();
+  const allAds: Ad[] = adsRes.data || [];
+
+  const articleAds = allAds.filter(ad => ad.position === 'articleAd');
+
   return (
     <>
       <ViewIncrementor id={article.id} documentId={article.documentId} currentViews={article.views || 0} type="article" />
@@ -212,7 +230,7 @@ export default async function ArticleDetailPage({ params }: any) {
       <ArticleShare url={articleUrl} documentId={article.documentId} currentShares={article.shares || 0} />
 
       {/* INLINE AD */}
-      <div className="article-ad">Advertisement</div>
+      <Advertisement ads={articleAds} className="article-ad" />
 
       {/* GALLERY / VIDEOS (KEPT) */}
       {article.videos && article.videos.length > 0 && (

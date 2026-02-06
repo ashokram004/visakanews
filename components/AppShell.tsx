@@ -6,13 +6,26 @@ import Link from "next/link";
 import MainNav from "./MainNav";
 import Footer from "./Footer";
 import SearchBar from "./SearchBar";
+import Advertisement from "./Advertisement";
 import { trackPageView } from "../lib/analytics";
+import { fetchAdvertisements } from "../lib/strapi";
+
+type Ad = {
+  id: number;
+  title: string;
+  image: {
+    url: string;
+    alternativeText?: string;
+  };
+  link?: string;
+};
 
 type Props = {
   children: React.ReactNode;
+  headerAds?: Ad[];
 };
 
-export default function AppShell({ children }: Props) {
+export default function AppShell({ children, headerAds = [] }: Props) {
   const pathname = usePathname();
   const isProfilePage = pathname.startsWith("/profiles/");
 
@@ -96,7 +109,7 @@ export default function AppShell({ children }: Props) {
               </Link>
             </div>
 
-            <div className="header-ad">Header Advertisement</div>
+            <Advertisement ads={headerAds} className="header-ad" />
 
             {/* Mobile Search Bar */}
             <div className="mobile-search mobile-only">

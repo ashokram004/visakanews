@@ -51,3 +51,7 @@ export async function updateFromStrapi(
 
   return res.json();
 }
+
+export async function fetchAdvertisements() {
+  return fetchFromStrapi("/advertisements?filters[isActive][$eq]=true&populate=image");
+}

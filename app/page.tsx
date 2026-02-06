@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { fetchFromStrapi } from "../lib/strapi";
+import { fetchFromStrapi, fetchAdvertisements } from "../lib/strapi";
 import HeroSlider from "../components/HeroSlider";
 import FlashNews from "../components/FlashNews";
+import Advertisement from "../components/Advertisement";
 import {
   FaEnvelope,
   FaYoutube,
@@ -50,6 +51,17 @@ type Author = {
   twitter?: string;
   mail?: string;
   telegram?: string;
+};
+
+type Ad = {
+  id: number;
+  title: string;
+  image: {
+    url: string;
+    alternativeText?: string;
+  };
+  link?: string;
+  position: string;
 };
 
 /* -------------------- Helpers -------------------- */
@@ -110,6 +122,13 @@ export default async function HomePage() {
 
   const latestArticles = homeArticles.slice(3, 8);
 
+  /* -------------------- Advertisements -------------------- */
+  const adsRes = await fetchAdvertisements();
+  const allAds: Ad[] = adsRes.data || [];
+
+  const leftHomeAds = allAds.filter(ad => ad.position === 'leftHomeAd');
+  const rightHomeAds = allAds.filter(ad => ad.position === 'rightHomeAd');
+
   return (
     <>
       {/* ================= FLASH NEWS ================= */}
@@ -122,8 +141,8 @@ export default async function HomePage() {
 
       {/* ================= SMALL ADS ================= */}
       <section className="home-ads small-ads">
-        <div className="ad-box small">Advertisement</div>
-        <div className="ad-box small">Advertisement</div>
+        <Advertisement ads={leftHomeAds} className="ad-box small" />
+        <Advertisement ads={rightHomeAds} className="ad-box small" />
       </section>
 
       {/* ================= LATEST NEWS ================= */}
