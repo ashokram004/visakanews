@@ -49,11 +49,13 @@ export default async function ProfilesPage() {
 
               <div className="profile-card-info">
                 <div className="profile-card-name">{profile.name}</div>
-                <span
-                  className="profile-badge"
-                >
-                  {profile.profileType ? profile.profileType.toUpperCase() : ""}
-                </span>
+                {profile.profileType ? (
+                  <div className="profile-badges-wrapper">
+                    {profile.profileType.split(',').map((type, index) => (
+                      <span key={index} className="profile-badge">{type.trim().toUpperCase()}</span>
+                    ))}
+                  </div>
+                ) : ""}
                 <div className="profile-read-more">read more...</div>
               </div>
             </div>
