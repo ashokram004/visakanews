@@ -24,7 +24,7 @@ export default function FlashNews({ flashItems }: FlashNewsProps) {
 
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % flashItems.length);
-    }, 3000); // Change every 3 seconds
+    }, 4000); // Change every 4 seconds
 
     return () => clearInterval(interval);
   }, [flashItems.length]);
