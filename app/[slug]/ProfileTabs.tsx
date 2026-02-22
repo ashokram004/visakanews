@@ -44,7 +44,9 @@ export default function ProfileTabs({ profile, children }: Props) {
   const slug = params.slug as string;
 
   const tabs = ["home", "achievements", "videos", "activities"];
-  const activeTab = pathname === `/profiles/${slug}` ? "home" : tabs.find(tab => pathname.endsWith(`/${tab}`)) || null;
+  
+  // For root-level paths like /slug, /slug/achievements, etc.
+  const activeTab = pathname === `/${slug}` ? "home" : tabs.find(tab => pathname.endsWith(`/${tab}`)) || null;
 
   return (
     <section className="profile-detail-page">
@@ -77,12 +79,12 @@ export default function ProfileTabs({ profile, children }: Props) {
           </div>
         </div>
 
-        {/* Tabs */}
+        {/* Tabs - Updated to use root-level paths */}
         <nav className="profile-tabs">
           {tabs.map((tab) => (
             <Link
               key={tab}
-              href={tab === "home" ? `/profiles/${slug}` : `/profiles/${slug}/${tab}`}
+              href={tab === "home" ? `/${slug}` : `/${slug}/${tab}`}
               className={activeTab === tab ? "active" : ""}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}

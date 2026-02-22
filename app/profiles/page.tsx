@@ -31,7 +31,7 @@ export default async function ProfilesPage() {
         {profiles.map((profile) => (
           <Link
             key={profile.id}
-            href={`/profiles/${profile.slug}`}
+            href={`/${profile.slug}`}
             className="profile-card compact"
           >
             <div className="profile-card-row">

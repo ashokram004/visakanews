@@ -1,5 +1,5 @@
-import { fetchFromStrapi } from "../../../../lib/strapi";
-import { toEmbedUrl } from "../../../../lib/video";
+import { fetchFromStrapi } from "../../../lib/strapi";
+import { toEmbedUrl } from "../../../lib/video";
 
 /* -------------------- Types -------------------- */
 

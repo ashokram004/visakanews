@@ -1,6 +1,6 @@
-import { fetchFromStrapi } from "../../../lib/strapi";
-import { toEmbedUrl } from "../../../lib/video";
-import { incrementView } from "../../../lib/actions";
+import { fetchFromStrapi } from "../../lib/strapi";
+import { toEmbedUrl } from "../../lib/video";
+import { incrementView } from "../../lib/actions";
 import ViewIncrementor from "@/components/ViewIncrementor";
 
 type Props = {
@@ -29,7 +29,6 @@ type Profile = {
   };
   profileImage?: {
     url: string;
-    alternativeText?: string;
   };
   views?: number;
 };
