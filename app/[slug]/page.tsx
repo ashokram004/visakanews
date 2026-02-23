@@ -40,10 +40,9 @@ function renderContent(blocks: ContentBlock[]) {
     /* ---------- PARAGRAPH ---------- */
     if (block.type === "paragraph" && block.children) {
       return (
-        <p key={index}>
+        <p key={index} style={{ whiteSpace: "pre-wrap" }}>
           {block.children.map((c: any, i: number) => {
-            if (!c.text) return null;
-            return <span key={i}>{c.text} </span>;
+            return <span key={i}>{c.text}</span>;
           })}
         </p>
       );
@@ -89,7 +88,7 @@ export default async function ProfileHomePage({ params }: Props) {
     <>
       <ViewIncrementor id={profile.id} documentId={profile.documentId} currentViews={profile.views || 0} type="profile" />
       <section className="profile-home">
-      {profile.shortBio && <p>{profile.shortBio}</p>}
+      {profile.shortBio && <p style={{ whiteSpace: "pre-wrap" }}>{profile.shortBio}</p>}
       {profile.homeVideo && (
         <div className="profile-home-video">
           <iframe

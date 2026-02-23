@@ -57,16 +57,9 @@ function renderContent(blocks: ContentBlock[]) {
       }
 
       return (
-        <p key={index}>
+        <p key={index} style={{ whiteSpace: "pre-wrap", textAlign: "justify", textJustify: "inter-word" }}>
           {block.children && block.children.length > 0 ? block.children.map((c: any, i: number) => {
-            if (!c.text) return null;
-
-            return (
-              <span key={i}>
-                {c.text}
-                {" "}
-              </span>
-            );
+            return <span key={i}>{c.text}</span>;
           }) : <br />}
         </p>
       );
