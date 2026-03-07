@@ -54,6 +54,7 @@ type Article = {
   title: string;
   slug: string;
   content: ContentBlock[];
+  createdAt: string;
   publishedAt: string;
   primaryCategory?: string;
   dynamicTabs?: { slug: string }[];
@@ -72,6 +73,27 @@ function getImageUrl(url?: string) {
   return url.startsWith("http")
     ? url
     : STRAPI_URL + url;
+}
+
+/**
+ * Display date helper - uses createdAt for display
+ * If publishedAt (updated date) differs from createdAt, show "Updated" label
+ */
+function formatArticleDate(article: { createdAt: string; publishedAt: string }): string {
+  const createdDate = new Date(article.createdAt);
+  const updatedDate = new Date(article.publishedAt);
+  
+  // Check if updated date is different from created date (by more than 1 minute)
+  const timeDiff = Math.abs(updatedDate.getTime() - createdDate.getTime());
+  const isUpdated = timeDiff > 60000; // More than 1 minute difference
+  
+  const dateStr = createdDate.toLocaleDateString();
+  
+  if (isUpdated) {
+    return `${dateStr} (Updated ${updatedDate.toLocaleDateString()})`;
+  }
+  
+  return dateStr;
 }
 
 /* -------------------- Helpers -------------------- */
@@ -178,11 +200,11 @@ export default async function ArticleDetailPage({ params }: any) {
   let latestRes;
   if (dynamicTab) {
     latestRes = await fetchFromStrapi(
-      `/articles?sort=publishedAt:desc&pagination[pageSize]=6&populate=coverImage&filters[dynamicTabs][slug][$eq]=${dynamicTab.slug}`
+      `/articles?sort=createdAt:desc&pagination[pageSize]=6&populate=coverImage&filters[dynamicTabs][slug][$eq]=${dynamicTab.slug}`
     );
   } else {
     latestRes = await fetchFromStrapi(
-      "/articles?sort=publishedAt:desc&pagination[pageSize]=6&populate=coverImage&filters[dynamicTabs][$null]=true"
+      "/articles?sort=createdAt:desc&pagination[pageSize]=6&populate=coverImage"
     );
   }
   const allLatest = latestRes.data || [];
@@ -208,7 +230,7 @@ export default async function ArticleDetailPage({ params }: any) {
 
       <div className="article-meta">
         {article.author?.name && <span>By {article.author.name} • </span>}
-        {new Date(article.publishedAt).toLocaleDateString()}
+        {formatArticleDate(article)}
         <span className="article-views"> • 👁 {article.views || 0} views</span>
         <span className="article-shares"> • 🔗 {article.shares || 0} shares</span>
       </div>

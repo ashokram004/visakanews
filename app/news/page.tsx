@@ -8,15 +8,39 @@ type Article = {
   id: number;
   title: string;
   slug: string;
+  createdAt: string;
+  publishedAt: string;
   coverImage?: {
     url: string;
   };
-  publishedAt: string;
 };
 
+/**
+ * Display date helper - uses createdAt for display
+ * If publishedAt (updated date) differs from createdAt, show "Updated" label
+ */
+function formatArticleDate(article: { createdAt: string; publishedAt: string }): string {
+  const createdDate = new Date(article.createdAt);
+  const updatedDate = new Date(article.publishedAt);
+  
+  // Check if updated date is different from created date (by more than 1 minute)
+  const timeDiff = Math.abs(updatedDate.getTime() - createdDate.getTime());
+  const isUpdated = timeDiff > 60000; // More than 1 minute difference
+  
+  const dateStr = createdDate.toLocaleDateString();
+  
+  if (isUpdated) {
+    return `${dateStr} (Updated ${updatedDate.toLocaleDateString()})`;
+  }
+  
+  return dateStr;
+}
+
 export default async function NewsPage() {
+  // Fetch ALL articles sorted by createdAt (newest first)
+  // No filtering by dynamicTabs - show all articles
   const res = await fetchFromStrapi(
-    "/articles?sort=publishedAt:desc&populate=coverImage&pagination[pageSize]=20&filters[dynamicTabs][$null]=true"
+    "/articles?sort=createdAt:desc&populate=coverImage&pagination[pageSize]=20"
   );
 
   const articles: Article[] = res.data;
@@ -48,7 +72,7 @@ export default async function NewsPage() {
                   <h3>{a.title}</h3>
                 </Link>
                 <span className="news-date">
-                  {new Date(a.publishedAt).toLocaleDateString()}
+                  {formatArticleDate(a)}
                 </span>
               </div>
             </li>

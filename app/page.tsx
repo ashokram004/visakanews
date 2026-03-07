@@ -35,11 +35,12 @@ type Article = {
   slug: string;
   primaryCategory?: string;
   isFeatured?: boolean;
+  createdAt: string;
+  publishedAt: string;
   coverImage?: {
     url: string;
     alternativeText?: string; // Added alternativeText property
   };
-  publishedAt: string;
 };
 
 type Author = {
@@ -73,6 +74,27 @@ function getImageUrl(url?: string) {
     : STRAPI_URL + url;
 }
 
+/**
+ * Display date helper - uses createdAt for display
+ * If publishedAt (updated date) differs from createdAt, show "Updated" label
+ */
+function formatArticleDate(article: { createdAt: string; publishedAt: string }): string {
+  const createdDate = new Date(article.createdAt);
+  const updatedDate = new Date(article.publishedAt);
+  
+  // Check if updated date is different from created date (by more than 1 minute)
+  const timeDiff = Math.abs(updatedDate.getTime() - createdDate.getTime());
+  const isUpdated = timeDiff > 60000; // More than 1 minute difference
+  
+  const dateStr = createdDate.toLocaleDateString();
+  
+  if (isUpdated) {
+    return `${dateStr} (Updated ${updatedDate.toLocaleDateString()})`;
+  }
+  
+  return dateStr;
+}
+
 /* -------------------- Page -------------------- */
 
 export default async function HomePage() {
@@ -96,27 +118,23 @@ export default async function HomePage() {
   });
 
   /* -------------------- Articles -------------------- */
+  // Fetch ALL articles sorted by createdAt (newest first)
+  // For home page, we show only isFeatured articles
   const articleRes = await fetchFromStrapi(
-    "/articles?sort=publishedAt:desc&pagination[pageSize]=20&populate=coverImage&filters[dynamicTabs][$null]=true"
+    "/articles?sort=createdAt:desc&pagination[pageSize]=50&populate=coverImage"
   );
 
   const allArticles: Article[] = articleRes.data;
 
   /* -------------------- FEATURED LOGIC -------------------- */
 
-  const featuredArticles = allArticles.filter(
-    (a) => a.isFeatured
-  );
-
-  const normalArticles = allArticles.filter(
-    (a) => !a.isFeatured
-  );
+  // Home page shows only featured articles, sorted by createdAt
+  const featuredArticles = allArticles
+    .filter((a) => a.isFeatured)
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
   // Build home list (max 8)
-  const homeArticles: Article[] = [
-    ...featuredArticles,
-    ...normalArticles,
-  ].slice(0, 8);
+  const homeArticles: Article[] = featuredArticles.slice(0, 8);
 
   const heroArticles = homeArticles.slice(0, 3);
 
@@ -166,7 +184,7 @@ export default async function HomePage() {
                 <div className="latest-news-content">
                   <h3 className="latest-news-title">{newsItem.title}</h3>
                   <span className="latest-news-date">
-                    {new Date(newsItem.publishedAt).toLocaleDateString()}
+                    {formatArticleDate(newsItem)}
                   </span>
                 </div>
               </Link>

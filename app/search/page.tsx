@@ -9,6 +9,7 @@ type Article = {
   id: number;
   title: string;
   slug: string;
+  createdAt: string;
   publishedAt: string;
   coverImage?: {
     url: string;
@@ -32,6 +33,27 @@ function getImageUrl(url?: string) {
   return url.startsWith("http")
     ? url
     : STRAPI_URL + url;
+}
+
+/**
+ * Display date helper - uses createdAt for display
+ * If publishedAt (updated date) differs from createdAt, show "Updated" label
+ */
+function formatArticleDate(article: { createdAt: string; publishedAt: string }): string {
+  const createdDate = new Date(article.createdAt);
+  const updatedDate = new Date(article.publishedAt);
+  
+  // Check if updated date is different from created date (by more than 1 minute)
+  const timeDiff = Math.abs(updatedDate.getTime() - createdDate.getTime());
+  const isUpdated = timeDiff > 60000; // More than 1 minute difference
+  
+  const dateStr = createdDate.toLocaleDateString();
+  
+  if (isUpdated) {
+    return `${dateStr} (Updated ${updatedDate.toLocaleDateString()})`;
+  }
+  
+  return dateStr;
 }
 
 /* -------------------- Page -------------------- */
@@ -58,7 +80,7 @@ export default async function SearchPage({
 
   const [articlesRes, profilesRes] = await Promise.all([
     fetchFromStrapi(
-      `/articles?filters[title][$containsi]=${query}&populate=coverImage&sort=publishedAt:desc`
+      `/articles?filters[title][$containsi]=${query}&populate=coverImage&sort=createdAt:desc`
     ),
     fetchFromStrapi(
       `/profiles?filters[$or][0][name][$containsi]=${query}&filters[$or][1][shortBio][$containsi]=${query}&populate=profileImage`
@@ -94,7 +116,7 @@ export default async function SearchPage({
                   <div className="news-text">
                     <span className="news-title">{a.title}</span>
                     <span className="news-date">
-                      {new Date(a.publishedAt).toLocaleDateString()}
+                      {formatArticleDate(a)}
                     </span>
                   </div>
                 </Link>

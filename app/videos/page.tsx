@@ -19,7 +19,7 @@ type Video = {
 
 export default async function VideosPage() {
   const data = await fetchFromStrapi(
-    "/videos?populate[articles]=true&sort=publishedAt:desc"
+    "/videos?populate[articles]=true&sort=createdAt:desc"
   );
 
   const videos: Video[] = data.data;

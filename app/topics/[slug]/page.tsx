@@ -9,6 +9,7 @@ type Article = {
   id: number;
   title: string;
   slug: string;
+  createdAt: string;
   publishedAt: string;
   coverImage?: {
     url: string;
@@ -36,6 +37,27 @@ function getImageUrl(url?: string) {
     : STRAPI_URL + url;
 }
 
+/**
+ * Display date helper - uses createdAt for display
+ * If publishedAt (updated date) differs from createdAt, show "Updated" label
+ */
+function formatArticleDate(article: { createdAt: string; publishedAt: string }): string {
+  const createdDate = new Date(article.createdAt);
+  const updatedDate = new Date(article.publishedAt);
+  
+  // Check if updated date is different from created date (by more than 1 minute)
+  const timeDiff = Math.abs(updatedDate.getTime() - createdDate.getTime());
+  const isUpdated = timeDiff > 60000; // More than 1 minute difference
+  
+  const dateStr = createdDate.toLocaleDateString();
+  
+  if (isUpdated) {
+    return `${dateStr} (Updated ${updatedDate.toLocaleDateString()})`;
+  }
+  
+  return dateStr;
+}
+
 /* -------------------- Page -------------------- */
 
 export default async function TopicPage({ params }: Props) {
@@ -53,7 +75,10 @@ export default async function TopicPage({ params }: Props) {
   }
 
   const topic = topics[0];
-  const articles = topic.articles || [];
+  // Sort articles by createdAt (newest first)
+  const articles = (topic.articles || []).sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
 
   return (
     <main className="news-page">
@@ -82,13 +107,13 @@ export default async function TopicPage({ params }: Props) {
                 />
               )}
 
-              <div className="news-info">
+                <div className="news-info">
                 <Link href={`/news/${a.slug}`}>
                   <h3>{a.title}</h3>
                 </Link>
 
                 <div className="news-date">
-                  {new Date(a.publishedAt).toLocaleDateString()}
+                  {formatArticleDate(a)}
                 </div>
               </div>
             </li>
