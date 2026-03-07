@@ -31,6 +31,10 @@ type Profile = {
     url: string;
   };
   views?: number;
+  mobileNo?: string;
+  address?: string;
+  location?: string;
+  mailId?: string;
 };
 
 /* -------------------- Helpers -------------------- */

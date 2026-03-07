@@ -43,7 +43,7 @@ export default function ProfileTabs({ profile, children }: Props) {
   const params = useParams();
   const slug = params.slug as string;
 
-  const tabs = ["home", "achievements", "videos", "activities"];
+  const tabs = ["home", "achievements", "videos", "activities", "contact"];
   
   // For root-level paths like /slug, /slug/achievements, etc.
   const activeTab = pathname === `/${slug}` ? "home" : tabs.find(tab => pathname.endsWith(`/${tab}`)) || null;
