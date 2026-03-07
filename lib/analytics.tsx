@@ -3,6 +3,19 @@ export async function trackPageView(data: {
   pageType: string;
 }) {
   try {
+    // Check if this page has already been tracked in this session
+    const trackedPages = sessionStorage.getItem("tracked_pages");
+    const trackedPagesSet = trackedPages ? new Set(JSON.parse(trackedPages)) : new Set();
+    
+    // Skip if this page URL was already tracked in this session
+    if (trackedPagesSet.has(data.pageUrl)) {
+      return;
+    }
+    
+    // Add this page to the tracked set and persist in sessionStorage
+    trackedPagesSet.add(data.pageUrl);
+    sessionStorage.setItem("tracked_pages", JSON.stringify([...trackedPagesSet]));
+
     const sessionId =
       localStorage.getItem("session_id") ||
       crypto.randomUUID();
