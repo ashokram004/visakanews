@@ -3,16 +3,45 @@ export async function trackPageView(data: {
   pageType: string;
 }) {
   try {
+    // ---- BOT FILTER ----
+    const userAgent = navigator.userAgent.toLowerCase();
+
+    const botPatterns = [
+      "bot",
+      "crawler",
+      "spider",
+      "googlebot",
+      "googleother",
+      "bingbot",
+      "duckduckbot",
+      "yandex",
+      "baiduspider",
+      "semrush",
+      "ahrefs",
+      "mj12bot",
+      "dotbot",
+      "bytespider",
+      "gptbot",
+      "claudebot",
+      "localhost"
+    ];
+
+    const isBot = botPatterns.some(pattern => userAgent.includes(pattern));
+
+    if (isBot || data.pageUrl.includes("localhost")) {
+      // Skip analytics for bots
+      return;
+    }
+    // --------------------
+
     // Check if this page has already been tracked in this session
     const trackedPages = sessionStorage.getItem("tracked_pages");
     const trackedPagesSet = trackedPages ? new Set(JSON.parse(trackedPages)) : new Set();
-    
-    // Skip if this page URL was already tracked in this session
+
     if (trackedPagesSet.has(data.pageUrl)) {
       return;
     }
-    
-    // Add this page to the tracked set and persist in sessionStorage
+
     trackedPagesSet.add(data.pageUrl);
     sessionStorage.setItem("tracked_pages", JSON.stringify([...trackedPagesSet]));
 
