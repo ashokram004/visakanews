@@ -288,7 +288,7 @@ export default async function ArticleDetailPage({ params }: any) {
       </section>
 
       {/* COMMENTS (BOTTOM) */}
-      <ArticleCommentsSection initialComments={commentsRes.data || []} articleId={article.id} />
+      <ArticleCommentsSection initialComments={commentsRes.data || []} articleId={article.id} articleDocumentId={article.documentId} />
 
     </article>
     </>

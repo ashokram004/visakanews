@@ -14,9 +14,10 @@ type Comment = {
 type Props = {
   initialComments: Comment[];
   articleId: number;
+  articleDocumentId: string;
 };
 
-export default function ArticleCommentsSection({ initialComments, articleId }: Props) {
+export default function ArticleCommentsSection({ initialComments, articleId, articleDocumentId }: Props) {
   const [comments, setComments] = useState<Comment[]>(initialComments);
 
   const handleCommentAdded = (newComment: Comment) => {
@@ -25,7 +26,7 @@ export default function ArticleCommentsSection({ initialComments, articleId }: P
 
   return (
     <>
-      <ArticleCommentForm articleId={articleId} onCommentAdded={handleCommentAdded} />
+      <ArticleCommentForm articleId={articleId} articleDocumentId={articleDocumentId} onCommentAdded={handleCommentAdded} />
       <ArticleComments comments={comments} />
     </>
   );

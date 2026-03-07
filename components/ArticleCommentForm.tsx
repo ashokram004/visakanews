@@ -13,10 +13,11 @@ type Comment = {
 
 type Props = {
   articleId: number;
+  articleDocumentId: string;
   onCommentAdded?: (comment: Comment) => void;
 };
 
-export default function ArticleCommentForm({ articleId, onCommentAdded }: Props) {
+export default function ArticleCommentForm({ articleId, articleDocumentId, onCommentAdded }: Props) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -25,27 +26,39 @@ export default function ArticleCommentForm({ articleId, onCommentAdded }: Props)
   const [showFailure, setShowFailure] = useState(false);
   const [failureMessage, setFailureMessage] = useState("");
 
+  console.log("ArticleCommentForm - articleId:", articleId, "articleDocumentId:", articleDocumentId);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
+    
+    // Using documentId for the relation (Strapi v5 format)
+    const postData = {
+      data: {
+        name,
+        email,
+        message,
+        isApproved: true,
+        article: {
+          connect: [articleDocumentId],
+        },
+      },
+    };
+    
+    console.log("Posting comment with documentId:", articleDocumentId);
+    console.log("Posting comment with data:", JSON.stringify(postData));
+    
     const res = await fetch(STRAPI_URL + "/api/comments", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        data: {
-          name,
-          email,
-          message,
-          article: articleId,
-          isApproved: true,
-        },
-      }),
+      body: JSON.stringify(postData),
     });
   
     const json = await res.json();
     console.log("Comment API response:", json);
+    console.log("Response status:", res.ok);
   
     if (!res.ok) {
       alert("Failed to post comment");
