@@ -87,7 +87,7 @@ export default function ProfileTabs({ profile, children }: Props) {
               href={tab === "home" ? `/${slug}` : `/${slug}/${tab}`}
               className={activeTab === tab ? "active" : ""}
             >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              {tab === "contact" ? "Contact us" : tab.charAt(0).toUpperCase() + tab.slice(1)}
             </Link>
           ))}
         </nav>

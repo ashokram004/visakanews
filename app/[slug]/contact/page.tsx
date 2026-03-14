@@ -38,7 +38,7 @@ export default async function ProfileContactPage({ params }: Props) {
         <div className="contact-item">
           <span className="contact-icon">📱</span>
           <div className="contact-details">
-            <strong>Mobile</strong>
+            <strong>Phone Number</strong>
             <a href={`tel:${mobileNo}`}>{mobileNo}</a>
           </div>
         </div>
