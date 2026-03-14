@@ -23,6 +23,7 @@ type Profile = {
   shortBio?: string;
   homeVideo?: string;
   detailedBio?: ContentBlock[];
+  biography?: ContentBlock[];
   coverImage?: {
     url: string;
     alternativeText?: string;
@@ -75,11 +76,74 @@ function renderContent(blocks: ContentBlock[]) {
   });
 }
 
+function renderDetailedBioContent(blocks: ContentBlock[]) {
+  return blocks.map((block, index) => {
+    /* ---------- PARAGRAPH ---------- */
+    if (block.type === "paragraph" && block.children) {
+      // Combine all children texts, then split by newlines to process line-by-line
+      const fullText = block.children.map((c: any) => c.text).join("");
+      const lines = fullText.split("\n");
+
+      return (
+        <div key={index} style={{ marginBottom: "16px" }}>
+          {lines.map((line, lineIndex) => {
+            const trimmedLine = line.trim();
+            // Ignore empty lines and the "Drag" text accidentally copied from Strapi
+            if (!trimmedLine || trimmedLine === "Drag") return null;
+
+            const dashIndex = trimmedLine.indexOf("-");
+            if (dashIndex !== -1) {
+              // We use the very first dash as the separator for Key & Value
+              const key = trimmedLine.substring(0, dashIndex).trim();
+              const value = trimmedLine.substring(dashIndex + 1).trim();
+
+              return (
+                <div key={lineIndex} style={{ display: "flex", gap: "16px", marginBottom: "12px", alignItems: "flex-start" }}>
+                  <strong style={{ flex: "0 0 35%", wordBreak: "break-word" }}>{key}</strong>
+                  <span style={{ flex: "1 1 auto", wordBreak: "break-word" }}>{value}</span>
+                </div>
+              );
+            }
+
+            // Normal text (no dashes found)
+            return (
+              <p key={lineIndex} style={{ marginBottom: "12px", wordBreak: "break-word" }}>
+                {trimmedLine}
+              </p>
+            );
+          })}
+        </div>
+      );
+    }
+
+    /* ---------- IMAGE ---------- */
+    if (block.type === "image" && block.image?.url) {
+      return (
+        <figure key={index} style={{ margin: "24px 0" }}>
+          <img
+            src={block.image.url}
+            alt={block.image.alternativeText || ""}
+            style={{
+              maxWidth: "100%",
+              width: "100%",
+              height: "auto",
+              display: "block",
+              margin: "0 auto",
+            }}
+          />
+        </figure>
+      );
+    }
+
+    return null;
+  });
+}
+
 export default async function ProfileHomePage({ params }: Props) {
   const { slug } = await params;
 
   const profileRes = await fetchFromStrapi(
-    `/profiles?filters[slug][$eq]=${slug}&populate=coverImage&&populate=profileImage`
+    `/profiles?filters[slug][$eq]=${slug}&populate=coverImage&populate=profileImage`
   );
 
   const profile = profileRes.data?.[0];
@@ -107,7 +171,13 @@ export default async function ProfileHomePage({ params }: Props) {
       )}
       {profile.detailedBio && (
         <div className="profile-detailed-bio">
-          {renderContent(profile.detailedBio)}
+          {renderDetailedBioContent(profile.detailedBio)}
+        </div>
+      )}
+      {profile.biography && (
+        <div className="profile-biography" style={{ marginTop: "24px" }}>
+          <h2>Biography</h2>
+          {renderContent(profile.biography)}
         </div>
       )}
     </section>

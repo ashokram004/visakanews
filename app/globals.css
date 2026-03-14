@@ -1304,6 +1304,7 @@ body {
   display: block;
   text-align: justify;
   text-justify: inter-word;
+  margin-top: 30px;
 }
 
 .profile-badges-wrapper {
