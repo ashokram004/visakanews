@@ -45,7 +45,7 @@ function renderContent(blocks: ContentBlock[]) {
     /* ---------- PARAGRAPH ---------- */
     if (block.type === "paragraph" && block.children) {
       return (
-        <p key={index} style={{ whiteSpace: "pre-wrap" }}>
+        <p key={index} style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
           {block.children.map((c: any, i: number) => {
             return <span key={i}>{c.text}</span>;
           })}
