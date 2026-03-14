@@ -3,6 +3,21 @@ export async function trackPageView(data: {
   pageType: string;
 }) {
   try {
+    // ---- IP FILTER ----
+    // Note: It is usually more performant to handle IP filtering on the backend.
+    const blockedIPs = ["219.91.202.110", "103.170.50.13"]; // Replace with the IPs you want to block
+    try {
+      const ipRes = await fetch("https://api.ipify.org?format=json");
+      if (ipRes.ok) {
+        const { ip } = await ipRes.json();
+        if (blockedIPs.includes(ip)) {
+          return; // Skip analytics for blocked IPs
+        }
+      }
+    } catch (e) {
+      // Silently ignore IP fetch errors and proceed to the rest of the script
+    }
+
     // ---- BOT FILTER ----
     const userAgent = navigator.userAgent.toLowerCase();
 
