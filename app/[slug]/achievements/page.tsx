@@ -74,14 +74,7 @@ function renderContent(blocks: ContentBlock[]) {
           <img
             src={imageUrl || ""}
             alt={block.image.alternativeText || ""}
-            style={{
-              maxWidth: "100%",
-              width: "100%",
-              height: "420px",
-              display: "block",
-              margin: "0 auto",
-              objectFit: "fill",
-            }}
+            className="achievement-image"
           />
 
           {block.image.alternativeText && (
