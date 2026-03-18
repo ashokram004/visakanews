@@ -1463,6 +1463,15 @@ body {
   object-fit: fill;
 }
 
+.activity-image {
+  max-width: 100%;
+  width: 100%;
+  height: 420px;
+  display: block;
+  margin: 0 auto;
+  object-fit: fill;
+}
+
 /* Dark Theme overrides for Contact Section */
 @media (prefers-color-scheme: dark) {
   .profile-content .profile-contact .contact-item {
@@ -1492,6 +1501,15 @@ body {
     font-size: 10px;
   }
   .achievement-image {
+    max-width: 100%;
+    width: 100%;
+    height: 320px;
+    display: block;
+    margin: 0 auto;
+    object-fit: fill;
+  }
+
+  .activity-image {
     max-width: 100%;
     width: 100%;
     height: 320px;
