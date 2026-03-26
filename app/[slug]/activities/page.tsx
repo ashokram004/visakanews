@@ -100,7 +100,7 @@ export default async function ProfileActivitiesPage({ params }: Props) {
   const { slug } = await params;
 
   const profileRes = await fetchFromStrapi(
-    `/profiles?filters[slug][$eq]=${slug}`
+    `/profiles?filters[slug][$eq]=${slug}&populate[profile_activities]=true`
   );
 
   const profile = profileRes.data?.[0];
@@ -109,11 +109,7 @@ export default async function ProfileActivitiesPage({ params }: Props) {
     return <h1>Profile not found</h1>;
   }
 
-  const activitiesRes = await fetchFromStrapi(
-    `/profile-activities?filters[profile][id][$eq]=${profile.id}`
-  );
-
-  const activities: Activity[] = activitiesRes.data.sort((a: Activity, b: Activity) => {
+  const activities: Activity[] = (profile?.profile_activities || []).sort((a: Activity, b: Activity) => {
     // Items with date come first, sorted by date descending
     if (a.date && b.date) {
       return new Date(b.date).getTime() - new Date(a.date).getTime();

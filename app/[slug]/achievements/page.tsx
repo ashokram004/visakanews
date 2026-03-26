@@ -100,7 +100,7 @@ export default async function ProfileAchievementsPage({ params }: Props) {
   const { slug } = await params;
 
   const profileRes = await fetchFromStrapi(
-    `/profiles?filters[slug][$eq]=${slug}`
+    `/profiles?filters[slug][$eq]=${slug}&populate[profileAchievements]=true`
   );
 
   const profile = profileRes.data?.[0];
@@ -109,11 +109,7 @@ export default async function ProfileAchievementsPage({ params }: Props) {
     return <h1>Profile not found</h1>;
   }
 
-  const achievementsRes = await fetchFromStrapi(
-    `/profile-achievements?filters[profile][id][$eq]=${profile.id}`
-  );
-
-  const achievements: Achievement[] = achievementsRes.data.sort((a: Achievement, b: Achievement) => {
+  const achievements: Achievement[] = (profile?.profileAchievements || []).sort((a: Achievement, b: Achievement) => {
     // Items with year come first, sorted by year descending
     if (a.year != null && b.year != null) {
       return b.year - a.year;
